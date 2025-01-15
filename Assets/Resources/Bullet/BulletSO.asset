@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1acecdccc39a884ba329e02b070ba0e, type: 3}
+  m_Name: BulletSO
+  m_EditorClassIdentifier: 
+  Speed: 3
+  Damage: 1
+  BulletView: {fileID: 5268080076719736814, guid: fc0b56df1317dd94ebd1ca64f741ec48, type: 3}
