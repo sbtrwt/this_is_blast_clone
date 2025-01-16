@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blaster.Targets
+namespace Blaster.Target
 {
     public class BlockController
     {
         private BlockView blockView;
-        private BlockSO blockSO;
-        private int health;
-        public BlockController(BlockSO blockSO, BlockView blockView)
+        //private BlockSO blockSO;
+        private float health;
+        public BlockController(BlockView blockView)
         {
-            this.blockSO = blockSO;
+            
             this.blockView = blockView;
-            health = blockSO.Health;
+            health = 1;
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
             health -= damage;
             if (health <= 0)

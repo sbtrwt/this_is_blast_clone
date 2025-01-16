@@ -10,6 +10,8 @@ namespace Blaster.Bullet
         private BulletSO bulletSO;
         private Vector2 bulletDirection;
         private IObjectPoolHandler<BulletController> objectPoolHandler;
+        private Vector2 minBound = new Vector2(-10,-10);
+        private Vector2 maxBound = new Vector2(10, 10);
         public BulletController( BulletView bulletView, Transform bulletContainer, BulletSO bulletSO, IObjectPoolHandler<BulletController> objectPoolHandler)
         {
             this.bulletView = GameObject.Instantiate(bulletView, bulletContainer);
@@ -26,8 +28,8 @@ namespace Blaster.Bullet
         }
         public void UpdateBulletMotion()
         {
-            Debug.Log("bulletSO.Speed: " + bulletSO.Speed);
-            Debug.Log("bulletDirection: " + bulletDirection);
+            //Debug.Log("bulletSO.Speed: " + bulletSO.Speed);
+            //Debug.Log("bulletDirection: " + bulletDirection);
             bulletView.transform.Translate( Time.deltaTime * bulletSO.Speed * bulletDirection);
             CheckBulletOutOfScreen();
         }
@@ -45,7 +47,7 @@ namespace Blaster.Bullet
         //check out of screen
         public void CheckBulletOutOfScreen()
         {
-            if (bulletView.transform.position.x > 3 || bulletView.transform.position.x < -3 || bulletView.transform.position.y > 3 || bulletView.transform.position.y < -3)
+            if (bulletView.transform.position.x > maxBound.x || bulletView.transform.position.x < minBound.x || bulletView.transform.position.y > maxBound.y || bulletView.transform.position.y < minBound.y)
             {
                 bulletView.gameObject.SetActive(false);
                 objectPoolHandler.ReturnItem(this);

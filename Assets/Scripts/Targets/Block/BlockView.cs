@@ -1,11 +1,12 @@
+using Blaster.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Blaster.Targets
+namespace Blaster.Target
 {
-    public class BlockView : MonoBehaviour
+    public class BlockView : TargetView
     {
-        public BlockController Controller;
+       
     }
 }

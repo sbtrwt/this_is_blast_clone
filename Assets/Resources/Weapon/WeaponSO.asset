@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WeaponSO
   m_EditorClassIdentifier: 
   WeaponView: {fileID: 3948991750879750719, guid: 32e34c9d64a5163418b0f0f60c5eb3d1, type: 3}
-  FireRate: 1
+  FireRate: 0.1

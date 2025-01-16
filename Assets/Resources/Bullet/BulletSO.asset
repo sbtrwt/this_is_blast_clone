@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1acecdccc39a884ba329e02b070ba0e, type: 3}
   m_Name: BulletSO
   m_EditorClassIdentifier: 
-  Speed: 3
+  Speed: 100
   Damage: 1
-  BulletView: {fileID: 5268080076719736814, guid: fc0b56df1317dd94ebd1ca64f741ec48, type: 3}
+  BulletView: {fileID: 4895695990564507001, guid: a7fb883f8a5a0504d8e25f11272064d3, type: 3}
