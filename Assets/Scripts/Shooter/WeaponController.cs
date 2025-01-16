@@ -59,11 +59,11 @@ namespace Blaster.Weapon
             }
         }
 
-        public void UpdateWeapon()
+        public void Update()
         {
             if (targetInRange.Count > 0)
             {
-                Rotate( targetInRange[0].position - weaponView.gameObject.transform.position);
+                Rotate( (targetInRange[0].position - weaponView.gameObject.transform.position).normalized);
                 ShootAtTarget(targetInRange[0]);
             }
         }
@@ -72,7 +72,7 @@ namespace Blaster.Weapon
            fireRate  -= Time.deltaTime;
             if (fireRate <= 0)
             {
-                Fire(targetEnemy.position);
+                Fire((targetEnemy.position - weaponView.gameObject.transform.position).normalized);
                 ResetAttackTimer();
             }
         }
@@ -81,5 +81,9 @@ namespace Blaster.Weapon
             weaponView.transform.parent = parent;
         }
         private void ResetAttackTimer() => fireRate = weaponSO.FireRate;
+        public void SetTargetInRange(List<Transform> targets)
+        {
+            targetInRange = targets;
+        }
     }
 }

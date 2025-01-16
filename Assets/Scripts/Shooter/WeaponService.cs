@@ -40,8 +40,20 @@ namespace Blaster.Weapon
         {
             return weapons;
         }
-
-
+        public void SetTargetInRange(List<Transform> targets)
+        {
+            foreach (var weapon in weapons)
+            {
+                weapon.SetTargetInRange(targets);
+            }
+        }
+        public void Update()
+        {
+            foreach (var weapon in weapons)
+            {
+                weapon.Update();
+            }
+        }
 
     }
 }

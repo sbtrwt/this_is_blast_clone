@@ -123,6 +123,68 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &175332595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 175332596}
+  m_Layer: 0
+  m_Name: WeaponContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &175332596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175332595}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4009888, y: 0.4989714, z: 3.7095847}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &518510518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 518510519}
+  m_Layer: 0
+  m_Name: BulletContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &518510519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518510518}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4009888, y: 0.4989714, z: 3.7095847}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,8 +414,9 @@ GameObject:
   - component: {fileID: 994260889}
   - component: {fileID: 994260888}
   - component: {fileID: 994260887}
+  - component: {fileID: 994260890}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 994260885}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.11, y: 0, z: -4.08}
+  m_LocalPosition: {x: -4.11, y: 0.45, z: -4.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -445,6 +508,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 994260885}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &994260890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994260885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2c64c458b1daf14298b8212ad72c942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1018941080
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,8 +740,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ed3c7553c6ef942aec5205745ab3f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _blockSO: {fileID: 11400000, guid: 855082096c216f14eb2e3335b30c849a, type: 2}
+  _weaponSO: {fileID: 11400000, guid: 81287882a764cef459deb1925e220b42, type: 2}
+  _bulletSO: {fileID: 11400000, guid: 0a06fdf12ec12db4bbd8d387f7a785ab, type: 2}
   _tilePrefab: {fileID: 4865449205267597072, guid: 8eafaaee4e8454f4ba29d712490797ce, type: 3}
   _gridContainer: {fileID: 828146880}
+  _weaponContainer: {fileID: 175332596}
+  _bulletContainer: {fileID: 518510519}
+  _targets:
+  - {fileID: 994260886}
 --- !u!4 &1366659114
 Transform:
   m_ObjectHideFlags: 0
@@ -812,7 +894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2121050831
 Transform:
   m_ObjectHideFlags: 0
@@ -822,7 +904,7 @@ Transform:
   m_GameObject: {fileID: 2121050830}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.71, y: 0, z: 3.4}
+  m_LocalPosition: {x: -1.71, y: 0.7, z: 3.4}
   m_LocalScale: {x: 1, y: 1, z: 1.7857144}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -910,6 +992,10 @@ PrefabInstance:
     - target: {fileID: 3343103526940676650, guid: fc0b56df1317dd94ebd1ca64f741ec48, type: 3}
       propertyPath: m_Name
       value: Bullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 3343103526940676650, guid: fc0b56df1317dd94ebd1ca64f741ec48, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5681065729310886695, guid: fc0b56df1317dd94ebd1ca64f741ec48, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1069,6 +1155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon
       objectReference: {fileID: 0}
+    - target: {fileID: 6387611574398646319, guid: 32e34c9d64a5163418b0f0f60c5eb3d1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1086,3 +1176,5 @@ SceneRoots:
   - {fileID: 1018941082}
   - {fileID: 4112255585140692278}
   - {fileID: 8677794645494672740}
+  - {fileID: 175332596}
+  - {fileID: 518510519}
