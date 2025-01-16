@@ -78,6 +78,10 @@ namespace Blaster.Weapon
                 weapon.Update();
             }
         }
+        public void SetWeaponToActive()
+        {
+            weapons.FirstOrDefault().IsActive = true;
+        }
         ~WeaponService()
         {
             unSubscribeToEvents();

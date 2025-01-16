@@ -7,34 +7,42 @@ using UnityEngine;
 
 public class WeaponController : IFireable
 {
-    private WeaponView weaponView;
-    private BulletPool bulletPool;
-    private BulletService bulletService;
-    private float fireRate;
-    private WeaponSO weaponSO;
-    private List<Transform> targetsInRange = new List<Transform>();
-    private Transform target;
-    public bool CanFire => fireRate <= 0;
+    private WeaponView _weaponView;
+    private BulletPool _bulletPool;
+    private BulletService _bulletService;
+    private float _fireRate;
+    private WeaponSO _weaponSO;
+    private List<Transform> _targetsInRange = new List<Transform>();
+    private Transform _target;
+    private bool _isActive=false;
+
+    public bool IsActive
+    {
+        get => _isActive;
+        set => _isActive = value;
+    }
+    public bool CanFire => _isActive && _fireRate <= 0;
 
     public WeaponController(WeaponSO weaponSO, Transform container)
     {
-        this.weaponSO = weaponSO;
-        this.weaponView = GameObject.Instantiate(weaponSO.WeaponView, container);
-        fireRate = weaponSO.FireRate; // Initialize fireRate
+        this._weaponSO = weaponSO;
+        this._weaponView = GameObject.Instantiate(weaponSO.WeaponView, container);
+        _weaponView.Controller = this;
+        _fireRate = weaponSO.FireRate; // Initialize fireRate
     }
 
     public void Init(BulletService bulletService)
     {
-        this.bulletService = bulletService;
-        bulletPool = bulletService.BulletPool;
+        this._bulletService = bulletService;
+        _bulletPool = bulletService.BulletPool;
     }
 
     public void Fire(Vector2 fireDirection)
     {
         if (CanFire)
         {
-            BulletController bulletToFire = bulletPool.GetBullet();
-            bulletToFire.ConfigureBullet(weaponView.GunPoint.position, fireDirection.normalized);
+            BulletController bulletToFire = _bulletPool.GetBullet();
+            bulletToFire.ConfigureBullet(_weaponView.GunPoint.position, fireDirection.normalized);
             ResetAttackTimer();
         }
     }
@@ -49,66 +57,66 @@ public class WeaponController : IFireable
         if (direction.sqrMagnitude > 0)
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
     }
 
     private void RotateTowardsTarget()
     {
-        if (target != null)
+        if (_target != null)
         {
-            Vector3 direction = target.position - weaponView.GunPoint.transform.position;
+            Vector3 direction = _target.position - _weaponView.GunPoint.transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
     }
 
     public void Update()
     {
-        if (targetsInRange != null && targetsInRange.Count > 0)
+        if (_targetsInRange != null && _targetsInRange.Count > 0)
         {
-            target = targetsInRange[0];
+            _target = _targetsInRange[0];
 
-            if (target != null)
+            if (_target != null)
             {
                 RotateTowardsTarget();
-                ShootAtTarget(target);
+                ShootAtTarget(_target);
             }
         }
         else
         {
-            target = null;
+            _target = null;
         }
 
-        fireRate -= Time.deltaTime; // Decrease fireRate over time
+        _fireRate -= Time.deltaTime; // Decrease fireRate over time
     }
 
     private void ShootAtTarget(Transform targetEnemy)
     {
         if (CanFire && targetEnemy != null)
         {
-            Vector2 fireDirection = (targetEnemy.position - weaponView.GunPoint.transform.position).normalized;
+            Vector2 fireDirection = (targetEnemy.position - _weaponView.GunPoint.transform.position).normalized;
             Fire(fireDirection);
         }
     }
     public void RemoveTarget(Transform target)
     {
-        targetsInRange.Remove(target);
+        _targetsInRange.Remove(target);
     }
 
     public void SetParent(Transform parent)
     {
-        weaponView.transform.parent = parent;
+        _weaponView.transform.parent = parent;
     }
 
-    private void ResetAttackTimer() => fireRate = weaponSO.FireRate;
+    private void ResetAttackTimer() => _fireRate = _weaponSO.FireRate;
 
     public void SetTargetInRange(List<Transform> targets)
     {
-        targetsInRange = targets;
+        _targetsInRange = targets;
     }
     public void AddTarget(Transform target)
     {
-        targetsInRange.Add(target);
+        _targetsInRange.Add(target);
     }
 }

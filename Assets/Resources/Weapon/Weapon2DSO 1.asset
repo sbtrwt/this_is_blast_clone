@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1acecdccc39a884ba329e02b070ba0e, type: 3}
-  m_Name: BulletSO
+  m_Script: {fileID: 11500000, guid: fd695609637c13546ac5ceb2b12cdae0, type: 3}
+  m_Name: Weapon2DSO 1
   m_EditorClassIdentifier: 
-  Speed: 20
-  Damage: 1
-  BulletView: {fileID: 4895695990564507001, guid: a7fb883f8a5a0504d8e25f11272064d3, type: 3}
+  WeaponView: {fileID: 5407762897007717339, guid: 871180b3590679146aeb2805583faf50, type: 3}
+  FireRate: 0.1

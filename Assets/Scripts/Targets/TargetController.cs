@@ -9,7 +9,9 @@ namespace Blaster.Target
         private float _health;
         private TargetService _targetService;
         private int _gridColumn;
+        private bool _isActive = false;
 
+        public bool IsActive { get => _isActive; set => _isActive = value; }
         public int GridColumn { get => _gridColumn; set => _gridColumn = value; }
         public TargetController(TargetView target, TargetService targetService, Transform container)
         {
@@ -22,6 +24,7 @@ namespace Blaster.Target
 
         public virtual void TakeDamage(float damage)
         {
+            if(!_isActive) { return; }
             _health -= damage;
             Debug.Log("Target attacked");
             if (_health <= 0)
@@ -35,6 +38,11 @@ namespace Blaster.Target
         private void DestroyBlock()
         {
             UnityEngine.Object.Destroy(_targetView.gameObject);
+        }
+        public Transform GetTransform()
+        {
+            if (_targetView == null) { return null; }
+            return _targetView.transform;
         }
     }
 }

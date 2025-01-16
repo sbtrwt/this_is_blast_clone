@@ -42,9 +42,16 @@ namespace Blaster.Grid
                 var columnQueue = new Queue<TileController>();
                 for (int row = 0; row < rows; row++)
                 {
-                    var tileController = new TileController(tileView, container);
-                    var targetController = _targetService.CreateTarget(tileController._tileView.transform);
-                    targetController.GridColumn = column;
+                   
+                    var tileController = new TileController(tileView, container, 1 , _targetService);
+                    Stack<TargetController> targetControllers = new Stack<TargetController>();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        var targetController = _targetService.CreateTarget(tileController._tileView.transform);
+                        targetController.GridColumn = column;
+                        targetControllers.Push(targetController);
+                    }
+                    tileController.SetTargetControllers(targetControllers);
                     tileController.SetPosition(new Vector2(column, row));
                     columnQueue.Enqueue(tileController);
                 }
@@ -66,17 +73,41 @@ namespace Blaster.Grid
             if (column < 0 || column >= _columnsCount || _columns[column].Count == 0)
                 return;
 
-            // Remove the bottom tile
-            var bottomTile = _columns[column].Dequeue();
-            _eventService.OnTargetRemoved.InvokeEvent(bottomTile.GetTransform());
+            // Get the bottom tile
+            var bottomTile = _columns[column].Peek();
             if (bottomTile != null)
             {
-                GameObject.Destroy(bottomTile._tileView.gameObject);
+                int targetCount = bottomTile.GetTargetCount();
+
+                // If the tile has targets, remove the bottom-most target
+                if (targetCount > 0)
+                {
+                    var target = bottomTile.RemoveTarget();
+                    _eventService.OnTargetRemoved?.InvokeEvent(target.GetTransform());
+
+                    // If no targets remain, destroy the tile
+                    if (bottomTile.GetTargetCount() == 0)
+                    {
+                        _columns[column].Dequeue();
+                        GameObject.Destroy(bottomTile._tileView.gameObject);
+                    }
+                }
+                else
+                {
+                    // Dequeue and destroy the tile if it has no targets
+                    _columns[column].Dequeue();
+                    GameObject.Destroy(bottomTile._tileView.gameObject);
+                }
             }
-            if (GetBottomTile(column) != null)
+
+            // Notify about the new bottom tile, if any
+            var newBottomTile = GetBottomTile(column);
+            if (newBottomTile != null)
             {
-                _eventService.OnNewColumnTarget.InvokeEvent(GetBottomTile(column)._tileView.transform);
-            }// Shift all tiles visually
+                _eventService.OnNewColumnTarget?.InvokeEvent(newBottomTile.GetTopTargetTransform());
+            }
+
+            // Shift tiles visually
             int currentRow = 0;
             foreach (var tile in _columns[column])
             {
@@ -85,14 +116,20 @@ namespace Blaster.Grid
             }
         }
 
+
         public void OnTargetsLoaded()
         {
             List<Transform> targets = new List<Transform>();
-            for(int column = 0; column < _columnsCount; column++)
+            for (int column = 0; column < _columnsCount; column++)
             {
-                targets.Add(GetBottomTile(column)._tileView.transform);
+                var bottomTile = GetBottomTile(column);
+                if (bottomTile != null)
+                {
+                    targets.Add(bottomTile.GetTopTargetTransform());
+                }
             }
-            _eventService.OnTargetLoaded.InvokeEvent(targets);
+            _eventService.OnTargetLoaded?.InvokeEvent(targets);
         }
+
     }
 }
