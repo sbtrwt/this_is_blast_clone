@@ -16,8 +16,12 @@ namespace Blaster.Weapon
             Debug.Log("Pointer down on weapon view.");
             if (Controller != null)
             {
-                Controller.IsActive = true; // Activate the weapon controller
-                Debug.Log("Weapon activated.");
+                if (Controller.CheckWeaponInTopRow())
+                { 
+                    //Controller.IsActive = true; 
+                    Debug.Log("Weapon activated."); 
+                }// Activate the weapon controller
+                
             }
         }
       

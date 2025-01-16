@@ -23,7 +23,7 @@ namespace Blaster.Weapon
         private EventService _eventService;
         private WeaponHolderService _weaponHolderService;
         private List<TargetController> targetControllers = new List<TargetController>();
-
+        private List<WeaponStage> stages = new List<WeaponStage>();
         public WeaponService(WeaponSO weaponSO, Transform container)
         {
             this._weaponSO = weaponSO;
@@ -37,7 +37,9 @@ namespace Blaster.Weapon
             this._weaponHolderService = weaponHolderService;
             //CreateWeapon(_weaponSO, _weaponContainer);
             SubscribeToEvents();
-            _weaponHolderService.FillIntoWeaponHolder(_weaponSO, _bulletService);
+            CreateStage(2);
+            _weaponHolderService.FillIntoWeaponHolder(_weaponSO, _bulletService, this);
+        
         }
         public void SubscribeToEvents()
         {
@@ -54,8 +56,8 @@ namespace Blaster.Weapon
         public WeaponController CreateWeapon(WeaponSO weaponSO, Transform container)
         {
             this._weaponSO = weaponSO;
-            WeaponController weaponController = new WeaponController(weaponSO, container);
-            weaponController.Init(_bulletService);
+            WeaponController weaponController = new WeaponController(weaponSO, container, this);
+            weaponController.Init(_bulletService, _weaponHolderService);
             weapons.Add(weaponController);
             return weaponController;
         }
@@ -93,9 +95,45 @@ namespace Blaster.Weapon
         {
             weapons.Add(weapon);
         }
+        public void CreateStage(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                WeaponStage stage = new WeaponStage();
+                stage.IsActive = true;
+                stage.IsFilled = false;
+                stage.Position = new Vector2(i, 0);
+                stages.Add(stage);
+            }
+        }
+        public WeaponStage GetEmtpyWeaponStage()
+        {
+            return stages.FirstOrDefault(x => x.IsFilled == false);
+        }
+        public void FillWeaponStage(WeaponController weapon)
+        {
+            var stage = GetEmtpyWeaponStage();
+            Debug.Log(stage);
+            if (stage != null)
+            {
+                stage.WeaponController = weapon;
+                stage.IsFilled = true;
+                weapon.IsActive = true;
+                weapon.SetWeaponContainer(_weaponContainer);
+                weapon.SetLocalPosition(stage.Position);
+            }
+        }
         ~WeaponService()
         {
             unSubscribeToEvents();
         }
+    }
+
+    public class WeaponStage
+    {
+        public bool IsFilled { get; set; }
+        public bool IsActive { get; set; }
+        public WeaponController WeaponController { get; set; }
+        public Vector2 Position { get; set; }
     }
 }

@@ -9,6 +9,7 @@ public class WeaponHolderService
     private Transform _waitingArea;
     private int _rows;
     private int _columnsCount;
+    private WeaponService _weaponService;
 
     public WeaponHolderService(int rows, int columns, Transform stageArea)
     {
@@ -23,7 +24,10 @@ public class WeaponHolderService
             _columns.Add(new Queue<WeaponController>());
         }
     }
-
+    public void Init(WeaponService weaponService)
+    {
+        _weaponService = weaponService;
+    }
     public void AddWeapon(int column, WeaponController weapon)
     {
         if (column < 0 || column >= _columnsCount)
@@ -34,7 +38,7 @@ public class WeaponHolderService
 
         // Set the weapon's position relative to its parent in the grid
         int currentRow = _columns[column].Count;
-        Vector3 gridLocalPosition = new Vector3(column, currentRow, 0);
+        Vector3 gridLocalPosition = new Vector3( column,_rows - currentRow, 0);
         weapon.SetLocalPosition(gridLocalPosition);
 
         _columns[column].Enqueue(weapon);
@@ -58,9 +62,7 @@ public class WeaponHolderService
 
     private void MoveWeaponToStage(WeaponController weapon)
     {
-        // Position the weapon in the stage area relative to its parent
-        weapon.SetLocalPosition(Vector3.zero);
-        weapon.IsActive = true;
+       _weaponService.FillWeaponStage(weapon);
 
         // Trigger shooting (you can add a delay or animation here if needed)
         Debug.Log($"{weapon} moved to stage.");
@@ -73,22 +75,44 @@ public class WeaponHolderService
         // Reposition the remaining weapons in the column
         foreach (var weapon in _columns[column])
         {
-            Vector3 newLocalPosition = new Vector3(column, rowIndex, 0);
+            Vector3 newLocalPosition = new Vector3( column, _rows - rowIndex, 0);
             weapon.SetLocalPosition(newLocalPosition);
             rowIndex++;
         }
     }
 
-    public void FillIntoWeaponHolder(WeaponSO weaponSO, BulletService bulletService)
+    public void FillIntoWeaponHolder(WeaponSO weaponSO, BulletService bulletService, WeaponService weaponService)
     {
         for (int i = 0; i < _columnsCount; i++)
         {
             for (int k = 0; k < _rows; k++)
             {
-                WeaponController weaponController = new WeaponController(weaponSO, _waitingArea);
-                weaponController.Init(bulletService);
+                WeaponController weaponController = new WeaponController(weaponSO, _waitingArea, weaponService);
+                weaponController.Init(bulletService, this);
                 AddWeapon(i, weaponController);
             }
         }
+    }
+
+    public bool CheckWeaponInTopsAndMoveToStage(WeaponController weaponController)
+    {
+        for (int column = 0; column < _columnsCount; column++)
+        {
+            if (_columns[column].Count == 0) continue;
+
+            // Get the top weapon in the column
+            WeaponController topWeapon = _columns[column].Peek();
+
+            // Check if the specified weapon matches the top weapon
+            if (topWeapon == weaponController)
+            {
+                // Move the weapon to the stage
+                OnWeaponClicked(column);
+                return true;
+            }
+        }
+
+        // If no match was found, return false
+        return false;
     }
 }

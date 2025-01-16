@@ -11,6 +11,7 @@ namespace Blaster.Weapon
     public class WeaponSO : ScriptableObject
     {
         public WeaponView WeaponView;
-        public float FireRate;  
+        public float FireRate;
+        public int BulletCount;
     }
 }
