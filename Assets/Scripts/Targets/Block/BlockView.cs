@@ -7,6 +7,10 @@ namespace Blaster.Target
 {
     public class BlockView : TargetView
     {
-       
+        
+        public void SetColor(Color color)
+        {
+            _spriteRenderer.color = color;
+        }
     }
 }

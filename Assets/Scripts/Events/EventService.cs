@@ -8,6 +8,12 @@ namespace Blaster.Events
 {
     public class EventService
     {
+        #region Game Events
+        public EventController<int> OnGameStart { get; private set; }
+        public EventController<bool> OnGamePause { get; private set; }
+        public EventController<bool> OnGameResume { get; private set; }
+        public EventController<bool> OnGameEnd { get; private set; }
+        #endregion
         public EventController<List<TargetController>> OnTargetLoaded { get; private set; }
         public EventController<TargetController> OnNewColumnTarget { get; private set; }
         public EventController<TargetController> OnTargetRemoved { get; private set; }
@@ -22,6 +28,10 @@ namespace Blaster.Events
             OnTargetLoaded = new EventController<List<TargetController>>();
             OnNewColumnTarget = new EventController<TargetController>();
             OnTargetRemoved = new EventController<TargetController>();
+            OnGameStart = new EventController<int>();
+            OnGamePause = new EventController<bool>();
+            OnGameResume = new EventController<bool>();
+            OnGameEnd = new EventController<bool>();
         }
 
     }

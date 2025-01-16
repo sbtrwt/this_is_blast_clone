@@ -1,11 +1,11 @@
 using Blaster.Bullet;
 using Blaster.Events;
 using Blaster.Grid;
+using Blaster.Level;
 using Blaster.Target;
 using Blaster.Targets;
 using Blaster.Weapon;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Blaster
@@ -19,6 +19,7 @@ namespace Blaster
         private EventService _eventService;
         private TargetService _targetService;
         private WeaponHolderService _weaponHolderService;
+        private LevelService _levelService;
         #endregion
 
         #region SOs
@@ -26,6 +27,7 @@ namespace Blaster
         [SerializeField] private WeaponSO _weaponSO;
         [SerializeField] private BulletSO _bulletSO;
         [SerializeField] private TargetSO _targetSO;
+        [SerializeField] private GameLevel _levelSO;
         #endregion
         #region GameObjects
         [SerializeField] private TileView _tilePrefab;
@@ -41,16 +43,18 @@ namespace Blaster
         {
             CreateServices();
             InjectDependencies();
+            _eventService.OnGameStart.InvokeEvent(1);
         }
 
         private void CreateServices()
         {
             _eventService = new Events.EventService();
-            _gridService = new GridService(4,4, _tilePrefab, _gridContainer);
+            _gridService = new GridService(4, 4, _tilePrefab, _gridContainer);
             _weaponService = new WeaponService(_weaponSO, _stageContainer);
             _bulletService = new BulletService(_bulletSO);
             _targetService = new TargetService(_targetSO);
-            _weaponHolderService = new WeaponHolderService(2,2,_weaponContainer);
+            _weaponHolderService = new WeaponHolderService(2, 2, _weaponContainer);
+            _levelService = new LevelService(_levelSO, _gridContainer);
         }
 
         private void InjectDependencies()
@@ -60,6 +64,7 @@ namespace Blaster
             _gridService.Init(_eventService, _targetService);
             _targetService.Init(_gridService);
             _weaponHolderService.Init(_weaponService);
+            _levelService.Init(_gridService, _eventService, _weaponHolderService, _bulletService, _weaponService);
         }
         // Update is called once per frame
         private void Update()

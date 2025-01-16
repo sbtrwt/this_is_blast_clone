@@ -8,6 +8,7 @@ namespace Blaster.Weapon
     public class WeaponView : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField] private Transform gunPoint;
+        [SerializeField] private SpriteRenderer weaponSprite;
 
         public WeaponController Controller;
         public Transform GunPoint => gunPoint;
@@ -19,10 +20,14 @@ namespace Blaster.Weapon
                 if (Controller.CheckWeaponInTopRow())
                 { 
                     //Controller.IsActive = true; 
-                    Debug.Log("Weapon activated."); 
+                    //Debug.Log("Weapon activated."); 
                 }// Activate the weapon controller
                 
             }
+        }
+        public void SetColor(Color color)
+        {
+            weaponSprite.color = color;
         }
       
     }

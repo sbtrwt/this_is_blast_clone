@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.Targets
+namespace Blaster.Targets
 {
     [CreateAssetMenu(fileName = "TargetType", menuName = "Targets/TargetType")]
     public  class TargetType : ScriptableObject

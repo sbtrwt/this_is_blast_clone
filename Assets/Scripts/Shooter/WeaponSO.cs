@@ -1,9 +1,4 @@
-﻿using Assets.Scripts.Targets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Blaster.Targets;
 using UnityEngine;
 
 namespace Blaster.Weapon

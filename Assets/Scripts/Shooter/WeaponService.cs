@@ -22,7 +22,7 @@ namespace Blaster.Weapon
         private Transform _weaponContainer;
         private EventService _eventService;
         private WeaponHolderService _weaponHolderService;
-        private List<TargetController> targetControllers = new List<TargetController>();
+        private List<TargetController> _targetControllers = new List<TargetController>();
         private List<WeaponStage> _stages = new List<WeaponStage>();
         public WeaponService(WeaponSO weaponSO, Transform container)
         {
@@ -38,14 +38,16 @@ namespace Blaster.Weapon
             //CreateWeapon(_weaponSO, _weaponContainer);
             SubscribeToEvents();
             CreateStage(2);
-            _weaponHolderService.FillIntoWeaponHolder(_weaponSO, _bulletService, this);
+            //_weaponHolderService.FillIntoWeaponHolder(_weaponSO, _bulletService, this);
         
         }
+        
         public void SubscribeToEvents()
         {
             _eventService.OnTargetLoaded.AddListener(SetTargetInRange);
             _eventService.OnNewColumnTarget.AddListener(AddTarget);
             _eventService.OnTargetRemoved.AddListener(RemoveTarget);
+          
         }
         public void unSubscribeToEvents()
         {
@@ -67,20 +69,24 @@ namespace Blaster.Weapon
         }
         public void SetTargetInRange(List<TargetController> targets)
         {
-            foreach(var target in targets)
+            _targetControllers = new List<TargetController>();
+            foreach (var target in targets)
             {
-                targetControllers.Add(target);
+                if (target != null)
+                    _targetControllers.Add(target);
             }
-            //UpdateTargets();
+            UpdateTargets();
         }
         public void AddTarget(TargetController target)
         {
-            targetControllers.Add(target);
-            //UpdateTargets();
+            if (target != null)
+                _targetControllers.Add(target);
+            UpdateTargets();
         }
         public void RemoveTarget(TargetController target)
         {
-            targetControllers.Remove(target);
+            if(target != null)
+            _targetControllers.Remove(target);
         }
         public void Update()
         {
@@ -120,7 +126,7 @@ namespace Blaster.Weapon
         public void FillWeaponStage(WeaponController weapon)
         {
             var stage = GetEmtpyWeaponStage();
-            Debug.Log(stage);
+            Debug.Log("Stage " + stage);
             if (stage != null)
             {
                 stage.WeaponController = weapon;
@@ -128,14 +134,14 @@ namespace Blaster.Weapon
                 weapon.IsActive = true;
                 weapon.SetWeaponContainer(_weaponContainer);
                 weapon.SetLocalPosition(stage.Position);
-                weapon.SetTargetInRange(targetControllers);
+                weapon.SetTargetInRange(_targetControllers);
             }
         }
         public void UpdateTargets() 
         { 
             foreach(var stage in _stages)
             {
-                stage.WeaponController?.SetTargetInRange(targetControllers);
+                stage.WeaponController?.SetTargetInRange(_targetControllers);
             }
         }
         public void RemoveWeaponFromStage(WeaponController weapon)

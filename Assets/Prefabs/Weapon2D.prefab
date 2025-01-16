@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunPoint: {fileID: 5133722676512932215}
+  weaponSprite: {fileID: 2162505603093371711}
 --- !u!61 &4338636175913302702
 BoxCollider2D:
   m_ObjectHideFlags: 0

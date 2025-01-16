@@ -555,6 +555,7 @@ MonoBehaviour:
   _weaponSO: {fileID: 11400000, guid: 7202a77cbaaea6c418e09ad2fbd7f1e4, type: 2}
   _bulletSO: {fileID: 11400000, guid: 0a06fdf12ec12db4bbd8d387f7a785ab, type: 2}
   _targetSO: {fileID: 11400000, guid: 855082096c216f14eb2e3335b30c849a, type: 2}
+  _levelSO: {fileID: 11400000, guid: 3b2be1cbfda7049478fca242181b9868, type: 2}
   _tilePrefab: {fileID: 4865449205267597072, guid: 8eafaaee4e8454f4ba29d712490797ce, type: 3}
   _gridContainer: {fileID: 828146880}
   _weaponContainer: {fileID: 175332596}

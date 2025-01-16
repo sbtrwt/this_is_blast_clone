@@ -1,11 +1,9 @@
-﻿using Blaster.Events;
+﻿
+using Blaster.Events;
+using Blaster.Level;
 using Blaster.Target;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Blaster.Grid
 {
@@ -24,17 +22,19 @@ namespace Blaster.Grid
             _columnsCount = columns;
 
             _tileView = tileView;
-            _container = container; 
+            _container = container;
         }
         public void Init(EventService eventService, TargetService targetService)
         {
             this._eventService = eventService;
             this._targetService = targetService;
-            CreateGrid(_rows, _columnsCount, _tileView, _container);
-            OnTargetsLoaded();
+            //CreateGrid(_rows, _columnsCount, _tileView, _container);
+            //OnTargetsLoaded();
         }
-        private void CreateGrid(int rows, int columns, TileView tileView, Transform container)
+        public void CreateGrid(int rows, int columns, TileView tileView, Transform container, List<TargetData> targetTypes)
         {
+            _rows = rows;
+            _columnsCount = columns;
             _columns = new List<Queue<TileController>>();
 
             for (int column = 0; column < columns; column++)
@@ -42,24 +42,42 @@ namespace Blaster.Grid
                 var columnQueue = new Queue<TileController>();
                 for (int row = 0; row < rows; row++)
                 {
-                   
-                    var tileController = new TileController(tileView, container, 1 , _targetService);
+                    // Create a new tile controller
+                    var tileController = new TileController(tileView, container, 1, _targetService);
+
+                    // Initialize target controllers for the tile
                     Stack<TargetController> targetControllers = new Stack<TargetController>();
-                    for (int i = 0; i < 1; i++)
+
+                    for (int i = 0; i < 1; i++) // Add one target per tile (adjust as needed)
                     {
                         var targetController = _targetService.CreateTarget(tileController._tileView.transform);
                         targetController.GridColumn = column;
+
+                        // Find the TargetData for this position
+                        var targetData = targetTypes.Find(p => p.X == row && p.Y == column);
+                        
+                            targetController.TargetType = targetData.TargetType; // Assign TargetType
+                        targetController.SetColor(targetController.TargetType.Color);
                         targetControllers.Push(targetController);
                     }
+
+                    // Assign target controllers to the tile
                     tileController.SetTargetControllers(targetControllers);
+
+                    // Set the tile's position
                     tileController.SetLocalPosition(new Vector2(column, row));
+
+                    // Enqueue the tile in the column
                     columnQueue.Enqueue(tileController);
                 }
+
+                // Add the column to the grid
                 _columns.Add(columnQueue);
             }
         }
 
-       
+
+
         public TileController GetBottomTile(int column)
         {
             if (column < 0 || column >= _columnsCount || _columns[column].Count == 0)
