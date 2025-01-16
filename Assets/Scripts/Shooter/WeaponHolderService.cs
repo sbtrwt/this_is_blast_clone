@@ -96,6 +96,7 @@ public class WeaponHolderService
 
     public bool CheckWeaponInTopsAndMoveToStage(WeaponController weaponController)
     {
+        if(_weaponService.IsAllStagesFilled()) return false;
         for (int column = 0; column < _columnsCount; column++)
         {
             if (_columns[column].Count == 0) continue;

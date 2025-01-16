@@ -23,7 +23,7 @@ namespace Blaster.Weapon
         private EventService _eventService;
         private WeaponHolderService _weaponHolderService;
         private List<TargetController> targetControllers = new List<TargetController>();
-        private List<WeaponStage> stages = new List<WeaponStage>();
+        private List<WeaponStage> _stages = new List<WeaponStage>();
         public WeaponService(WeaponSO weaponSO, Transform container)
         {
             this._weaponSO = weaponSO;
@@ -82,9 +82,9 @@ namespace Blaster.Weapon
         }
         public void Update()
         {
-            foreach (var weapon in weapons)
+            foreach (var stage in _stages)
             {
-                weapon.Update();
+                stage.WeaponController?.Update();
             }
         }
         public void SetWeaponToActive()
@@ -103,12 +103,16 @@ namespace Blaster.Weapon
                 stage.IsActive = true;
                 stage.IsFilled = false;
                 stage.Position = new Vector2(i, 0);
-                stages.Add(stage);
+                _stages.Add(stage);
             }
         }
         public WeaponStage GetEmtpyWeaponStage()
         {
-            return stages.FirstOrDefault(x => x.IsFilled == false);
+            return _stages.FirstOrDefault(x => x.IsFilled == false);
+        }
+        public bool IsAllStagesFilled()
+        {
+            return _stages.All(x => x.IsFilled == true);
         }
         public void FillWeaponStage(WeaponController weapon)
         {
@@ -121,6 +125,17 @@ namespace Blaster.Weapon
                 weapon.IsActive = true;
                 weapon.SetWeaponContainer(_weaponContainer);
                 weapon.SetLocalPosition(stage.Position);
+                weapon.SetTargetInRange(targetControllers);
+            }
+        }
+        public void RemoveWeaponFromStage(WeaponController weapon)
+        {
+            var stage = _stages.FirstOrDefault(x => x.WeaponController == weapon);
+            if (stage != null)
+            {
+                stage.WeaponController = null;
+                stage.IsFilled = false;
+                weapon.IsActive = false;
             }
         }
         ~WeaponService()

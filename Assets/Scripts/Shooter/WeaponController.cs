@@ -9,17 +9,18 @@ namespace Blaster.Weapon
 {
     public class WeaponController : IFireable
     {
+        private WeaponService _weaponService;
+        private WeaponHolderService _weaponHolderService;
+        private BulletService _bulletService;
+
         private WeaponView _weaponView;
         private BulletPool _bulletPool;
-        private BulletService _bulletService;
-        private WeaponService _weaponService;
         private float _fireRate;
         private WeaponSO _weaponSO;
         private List<TargetController> _targetsInRange = new List<TargetController>();
         private TargetController _target;
         private bool _isActive = false;
         private WeaponState _currentWeaponState;
-        private WeaponHolderService _weaponHolderService;
         private int _bulletCount;
 
         public WeaponState CurrentWeaponState {get => _currentWeaponState; }
@@ -56,7 +57,16 @@ namespace Blaster.Weapon
                 bulletToFire.ConfigureBullet(_weaponView.GunPoint.position, fireDirection.normalized);
                 ResetAttackTimer();
                 _bulletCount--;
+                if(_bulletCount == 0)
+                {
+                    _weaponService.RemoveWeaponFromStage(this);
+                    DestroyWeapon();
+                }
             }
+        }
+        public void DestroyWeapon()
+        {
+            GameObject.Destroy(_weaponView.gameObject);
         }
 
         public void Reload()
