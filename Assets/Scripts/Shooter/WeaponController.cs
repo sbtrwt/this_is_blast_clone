@@ -4,6 +4,7 @@ using Blaster.Weapon;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Blaster.Target;
 
 public class WeaponController : IFireable
 {
@@ -12,8 +13,8 @@ public class WeaponController : IFireable
     private BulletService _bulletService;
     private float _fireRate;
     private WeaponSO _weaponSO;
-    private List<Transform> _targetsInRange = new List<Transform>();
-    private Transform _target;
+    private List<TargetController> _targetsInRange = new List<TargetController>();
+    private TargetController _target;
     private bool _isActive=false;
 
     public bool IsActive
@@ -65,7 +66,7 @@ public class WeaponController : IFireable
     {
         if (_target != null)
         {
-            Vector3 direction = _target.position - _weaponView.GunPoint.transform.position;
+            Vector3 direction = _target.GetTransform().position - _weaponView.GunPoint.transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
@@ -80,7 +81,7 @@ public class WeaponController : IFireable
             if (_target != null)
             {
                 RotateTowardsTarget();
-                ShootAtTarget(_target);
+                ShootAtTarget(_target.GetTransform());
             }
         }
         else
@@ -99,7 +100,7 @@ public class WeaponController : IFireable
             Fire(fireDirection);
         }
     }
-    public void RemoveTarget(Transform target)
+    public void RemoveTarget(TargetController target)
     {
         _targetsInRange.Remove(target);
     }
@@ -111,12 +112,20 @@ public class WeaponController : IFireable
 
     private void ResetAttackTimer() => _fireRate = _weaponSO.FireRate;
 
-    public void SetTargetInRange(List<Transform> targets)
+    public void SetTargetInRange(List<TargetController> targets)
     {
         _targetsInRange = targets;
     }
-    public void AddTarget(Transform target)
+    public void AddTarget(TargetController target)
     {
         _targetsInRange.Add(target);
+    }
+    public void SetPosition(Vector2 position)
+    {
+        _weaponView.transform.position = position;
+    }
+    public void SetLocalPosition(Vector2 position)
+    {
+        _weaponView.transform.localPosition = position;
     }
 }

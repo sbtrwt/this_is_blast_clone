@@ -52,7 +52,7 @@ namespace Blaster.Grid
                         targetControllers.Push(targetController);
                     }
                     tileController.SetTargetControllers(targetControllers);
-                    tileController.SetPosition(new Vector2(column, row));
+                    tileController.SetLocalPosition(new Vector2(column, row));
                     columnQueue.Enqueue(tileController);
                 }
                 _columns.Add(columnQueue);
@@ -83,7 +83,7 @@ namespace Blaster.Grid
                 if (targetCount > 0)
                 {
                     var target = bottomTile.RemoveTarget();
-                    _eventService.OnTargetRemoved?.InvokeEvent(target.GetTransform());
+                    _eventService.OnTargetRemoved?.InvokeEvent(target);
 
                     // If no targets remain, destroy the tile
                     if (bottomTile.GetTargetCount() == 0)
@@ -104,14 +104,14 @@ namespace Blaster.Grid
             var newBottomTile = GetBottomTile(column);
             if (newBottomTile != null)
             {
-                _eventService.OnNewColumnTarget?.InvokeEvent(newBottomTile.GetTopTargetTransform());
+                _eventService.OnNewColumnTarget?.InvokeEvent(newBottomTile.GetTopTargetController());
             }
 
             // Shift tiles visually
             int currentRow = 0;
             foreach (var tile in _columns[column])
             {
-                tile.SetPosition(new Vector2(column, currentRow));
+                tile.SetLocalPosition(new Vector2(column, currentRow));
                 currentRow++;
             }
         }
@@ -119,13 +119,13 @@ namespace Blaster.Grid
 
         public void OnTargetsLoaded()
         {
-            List<Transform> targets = new List<Transform>();
+            List<TargetController> targets = new List<TargetController>();
             for (int column = 0; column < _columnsCount; column++)
             {
                 var bottomTile = GetBottomTile(column);
                 if (bottomTile != null)
                 {
-                    targets.Add(bottomTile.GetTopTargetTransform());
+                    targets.Add(bottomTile.GetTopTargetController());
                 }
             }
             _eventService.OnTargetLoaded?.InvokeEvent(targets);

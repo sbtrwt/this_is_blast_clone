@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Blaster.Events;
+using System.Xml.Linq;
+using Blaster.Target;
 
 namespace Blaster.Weapon
 {
@@ -19,18 +21,23 @@ namespace Blaster.Weapon
         private WeaponSO _weaponSO;
         private Transform _weaponContainer;
         private EventService _eventService;
+        private WeaponHolderService _weaponHolderService;
+        private List<TargetController> targetControllers = new List<TargetController>();
+
         public WeaponService(WeaponSO weaponSO, Transform container)
         {
             this._weaponSO = weaponSO;
+          
             this._weaponContainer = container;
-           
         }
-        public void Init(BulletService bulletService, EventService eventService)
+        public void Init(BulletService bulletService, EventService eventService, WeaponHolderService weaponHolderService)
         {
             this._bulletService = bulletService;
             this._eventService = eventService;
-            CreateWeapon(_weaponSO, _weaponContainer);
+            this._weaponHolderService = weaponHolderService;
+            //CreateWeapon(_weaponSO, _weaponContainer);
             SubscribeToEvents();
+            _weaponHolderService.FillIntoWeaponHolder(_weaponSO, _bulletService);
         }
         public void SubscribeToEvents()
         {
@@ -56,20 +63,20 @@ namespace Blaster.Weapon
         {
             return weapons;
         }
-        public void SetTargetInRange(List<Transform> targets)
+        public void SetTargetInRange(List<TargetController> targets)
         {
-            foreach (var weapon in weapons)
+            foreach(var target in targets)
             {
-                weapon.SetTargetInRange(targets);
+                targetControllers.Add(target);
             }
         }
-        public void AddTarget(Transform target)
+        public void AddTarget(TargetController target)
         {
-           weapons.FirstOrDefault().AddTarget(target);
+            targetControllers.Add(target);
         }
-        public void RemoveTarget(Transform target)
+        public void RemoveTarget(TargetController target)
         {
-            weapons.FirstOrDefault().RemoveTarget(target);
+            targetControllers.Remove(target);
         }
         public void Update()
         {
@@ -81,6 +88,10 @@ namespace Blaster.Weapon
         public void SetWeaponToActive()
         {
             weapons.FirstOrDefault().IsActive = true;
+        }
+        public void AddWeapon(WeaponController weapon)
+        {
+            weapons.Add(weapon);
         }
         ~WeaponService()
         {

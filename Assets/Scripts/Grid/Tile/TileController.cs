@@ -28,7 +28,10 @@ namespace Blaster.Grid
         {
             _tileView.transform.position = new Vector3(position.x, position.y, 0);
         }
-
+        public void SetLocalPosition(Vector2 position)
+        {
+            _tileView.transform.localPosition = new Vector3(position.x, position.y, 0);
+        }
         public Vector2 GetPosition()
         {
             return _tileView.transform.position;
@@ -45,6 +48,15 @@ namespace Blaster.Grid
             }
             _targetControllers.Peek().IsActive = true;
             return _targetControllers.Peek().GetTransform();
+        }
+        public TargetController GetTopTargetController()
+        {
+            if (_targetControllers.Count == 0)
+            {
+                return null;
+            }
+            _targetControllers.Peek().IsActive = true;
+            return _targetControllers.Peek();
         }
         public TargetController RemoveTarget()
         {
