@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Targets;
+using Blaster.Targets;
+using UnityEngine;
 
 namespace Blaster.Target
 {
@@ -10,13 +12,18 @@ namespace Blaster.Target
         private TargetService _targetService;
         private int _gridColumn;
         private bool _isActive = false;
-
+        private bool _isLocked = false;
+        private TargetType _targetType;
+        private TargetSO _targetSO;
         public bool IsActive { get => _isActive; set => _isActive = value; }
         public int GridColumn { get => _gridColumn; set => _gridColumn = value; }
-        public TargetController(TargetView target, TargetService targetService, Transform container)
-        {
+        public TargetType TargetType { get => _targetSO.TargetType; }
+        public bool IsLocked { get => _isLocked; set => _isLocked = value; }
 
-            this._targetView = GameObject.Instantiate(target, container);
+        public TargetController(TargetSO targetSO, TargetService targetService, Transform container)
+        {
+            _targetSO = targetSO;
+            this._targetView = GameObject.Instantiate(targetSO.TargetPrefab, container);
             this._targetView.Controller = this; 
             _health = 1;
             this._targetService = targetService;

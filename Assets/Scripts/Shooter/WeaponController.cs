@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Blaster.Target;
+using Assets.Scripts.Targets;
 namespace Blaster.Weapon
 {
     public class WeaponController : IFireable
@@ -22,6 +23,7 @@ namespace Blaster.Weapon
         private bool _isActive = false;
         private WeaponState _currentWeaponState;
         private int _bulletCount;
+        private TargetType _targetType => _weaponSO.TargetType;
 
         public WeaponState CurrentWeaponState {get => _currentWeaponState; }
         public bool IsActive
@@ -85,8 +87,9 @@ namespace Blaster.Weapon
 
         private void RotateTowardsTarget()
         {
-            if (_target != null)
+            if (_target != null && _target.GetTransform() != null )
             {
+                Debug.Log(_target.GetTransform());
                 Vector3 direction = _target.GetTransform().position - _weaponView.GunPoint.transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
@@ -98,11 +101,13 @@ namespace Blaster.Weapon
             if (_targetsInRange != null && _targetsInRange.Count > 0)
             {
                 _target = _targetsInRange[0];
+                Debug.Log(_target.TargetType);
+                Debug.Log(_targetType);
 
-                if (_target != null)
+                if (_target != null && _target.IsActive && _target.TargetType== _targetType)
                 {
                     RotateTowardsTarget();
-                    ShootAtTarget(_target.GetTransform());
+                    ShootAtTarget(_target);
                 }
             }
             else
@@ -113,11 +118,12 @@ namespace Blaster.Weapon
             _fireRate -= Time.deltaTime; // Decrease fireRate over time
         }
 
-        private void ShootAtTarget(Transform targetEnemy)
+        private void ShootAtTarget(TargetController targetEnemy)
         {
-            if (CanFire && targetEnemy != null)
+            if (CanFire && targetEnemy != null && targetEnemy.IsActive && !targetEnemy.IsLocked)
             {
-                Vector2 fireDirection = (targetEnemy.position - _weaponView.GunPoint.transform.position).normalized;
+                targetEnemy.IsLocked = true;
+                Vector2 fireDirection = (targetEnemy.GetTransform().position - _weaponView.GunPoint.transform.position).normalized;
                 Fire(fireDirection);
             }
         }
@@ -135,11 +141,19 @@ namespace Blaster.Weapon
 
         public void SetTargetInRange(List<TargetController> targets)
         {
+            Debug.Log("Setting targets in range");
             _targetsInRange = targets;
+            //foreach (var target in targets)
+            //{
+            //    if(_targetsInRange.Contains(target) == false)
+            //    AddTarget(target);
+            //}
         }
         public void AddTarget(TargetController target)
         {
-            _targetsInRange.Add(target);
+           
+            //if (target.IsActive && target.TargetType == _targetType)
+            { _targetsInRange.Add(target); }
         }
         public void SetPosition(Vector2 position)
         {

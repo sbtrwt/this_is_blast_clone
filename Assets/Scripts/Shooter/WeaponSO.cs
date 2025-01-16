@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Targets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,11 @@ namespace Blaster.Weapon
         public WeaponView WeaponView;
         public float FireRate;
         public int BulletCount;
+        public TargetType TargetType;
+
+        public bool IsTargetTypeMatch(TargetType targetType)
+        {
+            return TargetType == targetType;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Blaster.Grid;
+using Blaster.Targets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,10 @@ namespace Blaster.Target
     {
        private GridService _gridService;
         private List<TargetController> targets = new List<TargetController>();
-        private TargetView _targetView;
-        public TargetService(TargetView targetView)
+        private TargetSO _targetSO;
+        public TargetService(TargetSO targetSO)
         {
-            _targetView = targetView;
+            _targetSO = targetSO;
         }
         public void Init(GridService gridService)
         {
@@ -23,7 +24,7 @@ namespace Blaster.Target
         }
         public TargetController CreateTarget(Transform container)
         {
-            TargetController targetController = new TargetController(_targetView, this, container);
+            TargetController targetController = new TargetController(_targetSO, this, container);
             targets.Add(targetController);
             return targetController;
         }

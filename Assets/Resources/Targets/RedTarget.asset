@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd695609637c13546ac5ceb2b12cdae0, type: 3}
-  m_Name: Weapon2DSO 1
+  m_Script: {fileID: 11500000, guid: 327223536fa7f504a9d23823f00a1e1a, type: 3}
+  m_Name: RedTarget
   m_EditorClassIdentifier: 
-  WeaponView: {fileID: 5407762897007717339, guid: 871180b3590679146aeb2805583faf50, type: 3}
-  FireRate: 0.1
-  BulletCount: 10
+  Sprite: {fileID: 0}
+  Color: {r: 1, g: 0, b: 0, a: 0}

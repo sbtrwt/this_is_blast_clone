@@ -5,7 +5,7 @@ using Blaster.Target;
 using Blaster.Targets;
 using Blaster.Weapon;
 using System.Collections.Generic;
-
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Blaster
@@ -22,9 +22,10 @@ namespace Blaster
         #endregion
 
         #region SOs
-        [SerializeField] private BlockSO _blockSO;
+        [SerializeField] private TargetSO _blockSO;
         [SerializeField] private WeaponSO _weaponSO;
         [SerializeField] private BulletSO _bulletSO;
+        [SerializeField] private TargetSO _targetSO;
         #endregion
         #region GameObjects
         [SerializeField] private TileView _tilePrefab;
@@ -45,10 +46,10 @@ namespace Blaster
         private void CreateServices()
         {
             _eventService = new Events.EventService();
-            _gridService = new GridService(5, 5, _tilePrefab, _gridContainer);
+            _gridService = new GridService(4,4, _tilePrefab, _gridContainer);
             _weaponService = new WeaponService(_weaponSO, _stageContainer);
             _bulletService = new BulletService(_bulletSO);
-            _targetService = new TargetService(_targetView);
+            _targetService = new TargetService(_targetSO);
             _weaponHolderService = new WeaponHolderService(2,2,_weaponContainer);
         }
 

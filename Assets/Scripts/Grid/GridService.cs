@@ -45,7 +45,7 @@ namespace Blaster.Grid
                    
                     var tileController = new TileController(tileView, container, 1 , _targetService);
                     Stack<TargetController> targetControllers = new Stack<TargetController>();
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                         var targetController = _targetService.CreateTarget(tileController._tileView.transform);
                         targetController.GridColumn = column;

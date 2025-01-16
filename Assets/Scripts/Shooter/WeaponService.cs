@@ -71,10 +71,12 @@ namespace Blaster.Weapon
             {
                 targetControllers.Add(target);
             }
+            UpdateTargets();
         }
         public void AddTarget(TargetController target)
         {
             targetControllers.Add(target);
+            UpdateTargets();
         }
         public void RemoveTarget(TargetController target)
         {
@@ -82,6 +84,7 @@ namespace Blaster.Weapon
         }
         public void Update()
         {
+           
             foreach (var stage in _stages)
             {
                 stage.WeaponController?.Update();
@@ -126,6 +129,13 @@ namespace Blaster.Weapon
                 weapon.SetWeaponContainer(_weaponContainer);
                 weapon.SetLocalPosition(stage.Position);
                 weapon.SetTargetInRange(targetControllers);
+            }
+        }
+        public void UpdateTargets() 
+        { 
+            foreach(var stage in _stages)
+            {
+                stage.WeaponController?.SetTargetInRange(targetControllers);
             }
         }
         public void RemoveWeaponFromStage(WeaponController weapon)
