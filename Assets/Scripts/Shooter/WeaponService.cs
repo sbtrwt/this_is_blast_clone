@@ -71,12 +71,12 @@ namespace Blaster.Weapon
             {
                 targetControllers.Add(target);
             }
-            UpdateTargets();
+            //UpdateTargets();
         }
         public void AddTarget(TargetController target)
         {
             targetControllers.Add(target);
-            UpdateTargets();
+            //UpdateTargets();
         }
         public void RemoveTarget(TargetController target)
         {
