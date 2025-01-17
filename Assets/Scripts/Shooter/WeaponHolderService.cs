@@ -95,6 +95,7 @@ namespace Blaster.Weapon
                     var weaponSOToSet = shooterDatas.Find(p => p.X ==k && p.Y ==i);
                     WeaponController weaponController = new WeaponController(weaponSOToSet.WeaponSO, _waitingArea, weaponService);
                     weaponController.Init(bulletService, this);
+                    weaponController.SetBulletCount(weaponSOToSet.BulletCount);
                     AddWeapon(i, weaponController);
                 }
             }

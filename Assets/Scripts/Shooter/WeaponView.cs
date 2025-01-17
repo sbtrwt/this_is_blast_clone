@@ -9,6 +9,8 @@ namespace Blaster.Weapon
     {
         [SerializeField] private Transform gunPoint;
         [SerializeField] private SpriteRenderer weaponSprite;
+        [SerializeField] private TMPro.TMP_Text hitText;
+        [SerializeField] private ParticleSystem smokePartilce;
 
         public WeaponController Controller;
         public Transform GunPoint => gunPoint;
@@ -29,6 +31,13 @@ namespace Blaster.Weapon
         {
             weaponSprite.color = color;
         }
-      
+        public void SetHitText(string text)
+        {
+            hitText.text = text;
+        }
+        public void PlaySmokeParticle()
+        {
+            smokePartilce.Play();
+        }
     }
 }

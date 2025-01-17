@@ -60,6 +60,7 @@ namespace Blaster.Level
     public struct ShooterData
     {
         public int X, Y;
+        public int BulletCount;
         public WeaponSO WeaponSO;
     }
     [Serializable]

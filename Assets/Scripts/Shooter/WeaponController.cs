@@ -43,6 +43,7 @@ namespace Blaster.Weapon
             _weaponService = weaponService;
             _bulletCount = weaponSO.BulletCount;
             _weaponView.SetColor(_weaponSO.TargetType.Color);
+            _weaponView.SetHitText(weaponSO.BulletCount.ToString());
         }
 
         public void Init(BulletService bulletService, WeaponHolderService weaponHolderService)
@@ -50,6 +51,7 @@ namespace Blaster.Weapon
             _weaponHolderService = weaponHolderService;
             this._bulletService = bulletService;
             _bulletPool = bulletService.BulletPool;
+          
         }
 
         public void Fire(Vector2 fireDirection)
@@ -60,12 +62,15 @@ namespace Blaster.Weapon
                 bulletToFire.ConfigureBullet(_weaponView.GunPoint.position, fireDirection.normalized);
                 ResetAttackTimer();
                 _bulletCount--;
+                _weaponView.SetHitText(_bulletCount.ToString());
+                _weaponView.PlaySmokeParticle();
                 if (_bulletCount == 0)
                 {
                     _weaponService.RemoveWeaponFromStage(this);
                     DestroyWeapon();
                 }
             }
+            
         }
         public void DestroyWeapon()
         {
@@ -104,6 +109,7 @@ namespace Blaster.Weapon
         public void Update()
         {
             if(_weaponView == null || !IsActive) { return; }
+            //_weaponView.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             if (_targetsInRange != null && _targetsInRange.Count > 0)
             {
                 _target = _targetsInRange[0];
@@ -116,6 +122,10 @@ namespace Blaster.Weapon
                     
                     RotateTowardsTarget();
                     ShootAtTarget(_target);
+                }
+                else
+                {
+                    _currentWeaponState = WeaponState.Idle;
                 }
             }
             else
@@ -131,6 +141,7 @@ namespace Blaster.Weapon
             if (CanFire && targetEnemy != null && targetEnemy.IsActive && !targetEnemy.IsLocked)
             {
                 targetEnemy.IsLocked = true;
+                _currentWeaponState = WeaponState.Shooting;
                 Vector2 fireDirection = (targetEnemy.GetTransform().position - _weaponView.GunPoint.transform.position).normalized;
                 Fire(fireDirection);
             }
@@ -192,11 +203,17 @@ namespace Blaster.Weapon
         {
             _weaponView.transform.parent = container;
         }
+        public void SetBulletCount(int bulletCount)
+        {
+            _bulletCount = bulletCount;
+            _weaponView.SetHitText(bulletCount.ToString());
+        }
     }
 
     public enum WeaponState
     {
         Waiting,
-        Shooting
+        Shooting,
+        Idle
     }
 }
