@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level2SO
   m_EditorClassIdentifier: 
   LevelIndex: 1
-  Rows: 4
+  Rows: 10
   Columns: 2
   StageColumns: 4
   ShooterStageView: {fileID: 7736268081153827064, guid: 3d3f219a80cb6c148bc6be5a3623e66e, type: 3}
@@ -22,27 +22,63 @@ MonoBehaviour:
   - X: 0
     Y: 0
     TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
-  - X: 0
-    Y: 1
-    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
   - X: 1
     Y: 0
     TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
-  - X: 1
+  - X: 0
     Y: 1
     TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 1
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
   - X: 0
     Y: 2
     TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
   - X: 1
     Y: 2
-    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
   - X: 0
     Y: 3
     TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
   - X: 1
     Y: 3
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
+  - X: 0
+    Y: 4
     TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 4
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
+  - X: 0
+    Y: 5
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 5
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
+  - X: 0
+    Y: 6
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 6
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
+  - X: 0
+    Y: 7
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 7
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
+  - X: 0
+    Y: 8
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 8
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
+  - X: 0
+    Y: 9
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 9
+    TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
   ShooterRows: 2
   ShooterColumns: 1
   ShooterTypes:

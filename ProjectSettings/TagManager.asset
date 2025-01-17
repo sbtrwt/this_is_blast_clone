@@ -11,9 +11,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Stage
+  - Shooter
+  - Text
   - 
   - 
   - 
@@ -40,4 +40,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Stage
+    uniqueID: 1220752519
+    locked: 0
+  - name: Shooter
+    uniqueID: 3690262931
+    locked: 0
+  - name: Text
+    uniqueID: 1704671863
     locked: 0
