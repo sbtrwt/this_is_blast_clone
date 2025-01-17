@@ -94,7 +94,7 @@ namespace Blaster.Weapon
                     stage.WeaponController?.RemoveTarget(target);
                 }
             }
-
+           
         }
         public void Update()
         {
@@ -103,6 +103,7 @@ namespace Blaster.Weapon
             {
                 stage.WeaponController?.Update();
             }
+            IsGameOver();
         }
         public void SetWeaponToActive()
         {
@@ -116,16 +117,32 @@ namespace Blaster.Weapon
         {
             RemoveStage();
             _stages = new List<ShooterStageController>();
+
+            // Calculate the total width and starting position
+            float stageWidth = stagePrefab.transform.localScale.x; // Adjust if prefab size isn't tied to scale
+            float totalWidth = count * stageWidth;
+            float startX = -(totalWidth / 2) + (stageWidth / 2); // Center-align the stages
+
             for (int i = 0; i < count; i++)
             {
+                // Create a new stage
                 ShooterStageController stage = new ShooterStageController(stagePrefab, _weaponContainer);
                 stage.IsActive = true;
                 stage.IsFilled = false;
-                stage.Position = new Vector2(i, 0);
-                stage.SetLocalPosition(stage.Position);
+
+                // Calculate the position of each stage
+                float xPos = startX + (i * stageWidth);
+                Vector3 position = new Vector3(xPos, 0, 0); // Centered horizontally, aligned vertically
+
+                // Set position relative to parent
+                stage.Position = position;
+                stage.SetLocalPosition(position);
+
+                // Add the stage to the list
                 _stages.Add(stage);
             }
         }
+
         public void RemoveStage()
         {
             if (_stages != null && _stages.Count > 0)
@@ -185,6 +202,35 @@ namespace Blaster.Weapon
         {
             _soundService.PlaySoundEffects(SoundType.Shoot);
         }
+        public void IsGameOver()
+        {
+            if(IsAllStagesFilled() && IsStageAllWeaponIdle())
+            {
+                _eventService.OnGameEnd.InvokeEvent(false);
+            }
+        }
+        public bool IsStageAllWeaponIdle()
+        {
+            bool isAllIdle = true;
+
+            foreach (var stage in _stages)
+            {
+                if (stage.WeaponController != null && stage.WeaponController.IsWeaponIdle())
+                {
+                    isAllIdle = true;
+                }
+                else
+                {
+                    isAllIdle = false;
+                    break;
+                }
+            }
+            return isAllIdle;
+        }
+
+
+
+
         ~WeaponService()
         {
             unSubscribeToEvents();

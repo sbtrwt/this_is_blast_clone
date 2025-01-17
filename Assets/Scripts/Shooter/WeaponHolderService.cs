@@ -41,13 +41,31 @@ namespace Blaster.Weapon
                 return;
             }
 
-            // Set the weapon's position relative to its parent in the grid
-            int currentRow = _columns[column].Count;
-            Vector3 gridLocalPosition = new Vector3(column, _rows - currentRow, 0);
+            // Define spacing (e.g., based on weapon prefab dimensions or fixed values)
+            float columnSpacing = 1f; // Adjust as per weapon width or grid spacing
+            float rowSpacing = 1f;    // Adjust as per weapon height or grid spacing
+
+            // Calculate total grid width and height
+            float gridWidth = _columnsCount * columnSpacing;
+            float gridHeight = _rows * rowSpacing;
+
+            // Calculate starting offsets to center the grid relative to the parent
+            float startX = -(gridWidth / 2) + (columnSpacing / 2); // Center horizontally
+            float startY = -(gridHeight / 2) + (rowSpacing / 2);   // Center vertically
+
+            // Determine the weapon's position in the grid
+            int currentRow = _columns[column].Count; // Current row index in the column
+            float xPos = startX + (column * columnSpacing);
+            float yPos = startY + ((_rows - currentRow - 1) * rowSpacing); // Adjust for top-down alignment
+
+            // Set the weapon's local position relative to its parent
+            Vector3 gridLocalPosition = new Vector3(xPos, yPos, 0);
             weapon.SetLocalPosition(gridLocalPosition);
 
+            // Add the weapon to the column queue
             _columns[column].Enqueue(weapon);
         }
+
 
         public void OnWeaponClicked(int column)
         {
@@ -75,17 +93,47 @@ namespace Blaster.Weapon
 
         private void ShiftColumnUp(int column)
         {
+            // Define spacing (based on weapon prefab dimensions or fixed values)
+            float columnSpacing = 1f; // Adjust as needed
+            float rowSpacing = 1f;    // Adjust as needed
+
+            // Calculate the total grid width and height
+            float gridWidth = _columnsCount * columnSpacing;
+            float gridHeight = _rows * rowSpacing;
+
+            // Calculate the starting X and Y positions to center the grid
+            float startX = -(gridWidth / 2) + (columnSpacing / 2); // Center horizontally
+            float startY = -(gridHeight / 2) + (rowSpacing / 2);   // Center vertically
+
             int rowIndex = 0;
 
             // Reposition the remaining weapons in the column
             foreach (var weapon in _columns[column])
             {
-                Vector3 newLocalPosition = new Vector3(column, _rows - rowIndex, 0);
+                // Calculate the new local position for the weapon
+                float xPos = startX + (column * columnSpacing); // Centered column position
+                float yPos = startY + ((_rows - rowIndex - 1) * rowSpacing); // Top-down alignment
+                Vector3 newLocalPosition = new Vector3(xPos, yPos, 0);
+
+                // Set the weapon's local position
                 weapon.SetLocalPosition(newLocalPosition);
                 rowIndex++;
             }
         }
 
+
+        public void ClearWeaponHolder()
+        {
+            if(_columns == null ) return;
+            for (int i = 0; i < _columnsCount; i++)
+            {
+                while (_columns[i].Count > 0)
+                {
+                    WeaponController weapon = _columns[i].Dequeue();
+                    weapon.DestroyWeapon();
+                }
+            }
+        }
         public void FillIntoWeaponHolder( BulletService bulletService, WeaponService weaponService, List<ShooterData> shooterDatas )
         {
             for (int i = 0; i < _columnsCount; i++)

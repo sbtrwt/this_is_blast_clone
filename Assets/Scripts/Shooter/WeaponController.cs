@@ -4,6 +4,7 @@ using Blaster.Target;
 using Blaster.Targets;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 namespace Blaster.Weapon
 {
@@ -17,7 +18,7 @@ namespace Blaster.Weapon
         private BulletPool _bulletPool;
         private float _fireRate;
         private WeaponSO _weaponSO;
-        private List<TargetController> _targetsInRange ;
+        private List<TargetController> _targetsInRange;
         private TargetController _target;
         private bool _isActive = false;
         private WeaponState _currentWeaponState;
@@ -51,7 +52,7 @@ namespace Blaster.Weapon
             _weaponHolderService = weaponHolderService;
             this._bulletService = bulletService;
             _bulletPool = bulletService.BulletPool;
-          
+
         }
 
         public void Fire(Vector2 fireDirection)
@@ -68,10 +69,15 @@ namespace Blaster.Weapon
                 if (_bulletCount == 0)
                 {
                     _weaponService.RemoveWeaponFromStage(this);
+                    foreach(var target in _targetsInRange)
+                    {
+                        target.IsLocked = false;
+                        target.TargetLockedBy = null;
+                    }
                     DestroyWeapon();
                 }
             }
-            
+
         }
         public void DestroyWeapon()
         {
@@ -109,18 +115,18 @@ namespace Blaster.Weapon
 
         public void Update()
         {
-            if(_weaponView == null || !IsActive) { return; }
+            if (_weaponView == null || !IsActive) { return; }
             //_weaponView.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             if (_targetsInRange != null && _targetsInRange.Count > 0)
             {
-                _target = _targetsInRange[0];
-                Debug.Log("update _targetType : " + _targetType);
-                Debug.Log("update _target :     " + _target.TargetType);
-                Debug.Log("update _targetsInRange.Count : " + _targetsInRange.Count);
+                _target = _targetsInRange.FirstOrDefault(x => !x.IsLocked || x.TargetLockedBy == this);
+                //Debug.Log("update _targetType : " + _targetType);
+                //Debug.Log("update _target :     " + _target.TargetType);
+                //Debug.Log("update _targetsInRange.Count : " + _targetsInRange.Count);
 
-                if (_target != null && _target.IsActive  && !_target.IsLocked && _target.TargetType == _targetType)
+                if (_target != null && _target.IsActive && (!_target.IsLocked || _target.TargetLockedBy == this) && _target.TargetType == _targetType)
                 {
-                    
+
                     RotateTowardsTarget();
                     ShootAtTarget(_target);
                 }
@@ -136,14 +142,15 @@ namespace Blaster.Weapon
             }
 
             _fireRate -= Time.deltaTime; // Decrease fireRate over time
-            Debug.Log(_currentWeaponState);
+            //Debug.Log(_currentWeaponState);
         }
 
         private void ShootAtTarget(TargetController targetEnemy)
         {
-            if (CanFire && targetEnemy != null && targetEnemy.IsActive && !targetEnemy.IsLocked)
+            if (CanFire && targetEnemy != null && targetEnemy.IsActive && (!targetEnemy.IsLocked || _target.TargetLockedBy == this))
             {
                 targetEnemy.IsLocked = true;
+                targetEnemy.TargetLockedBy = this;
                 _currentWeaponState = WeaponState.Shooting;
                 Vector2 fireDirection = (targetEnemy.GetTransform().position - _weaponView.GunPoint.transform.position).normalized;
                 Fire(fireDirection);
@@ -152,6 +159,14 @@ namespace Blaster.Weapon
         public void RemoveTarget(TargetController target)
         {
             _targetsInRange.Remove(target);
+            if (_targetsInRange.Count == 0)
+            {
+                _currentWeaponState = WeaponState.Idle;
+            }
+            if (_target == target)
+            {
+                _target = null;
+            }
         }
 
         public void SetParent(Transform parent)
@@ -163,22 +178,22 @@ namespace Blaster.Weapon
 
         public void SetTargetInRange(List<TargetController> targets)
         {
-            Debug.Log("Setting targets in range");
+            //Debug.Log("Setting targets in range");
             //_targetsInRange = targets;
             foreach (var target in targets)
             {
                 if (_targetsInRange.Contains(target) == false)
                     AddTarget(target);
             }
-            Debug.Log("_targetType : " + _targetType);
-            Debug.Log("_targetsInRange.Count : " + _targetsInRange.Count);
-           
+            //Debug.Log("_targetType : " + _targetType);
+            //Debug.Log("_targetsInRange.Count : " + _targetsInRange.Count);
+
         }
         public void AddTarget(TargetController target)
         {
-            Debug.Log("AddTarget : " + target);
-            Debug.Log(target.TargetType);
-            Debug.Log(_targetType);
+            //Debug.Log("AddTarget : " + target);
+            //Debug.Log(target.TargetType);
+            //Debug.Log(_targetType);
 
             if (target != null && target.IsActive && target.TargetType == _targetType)
             { _targetsInRange.Add(target); }
@@ -210,6 +225,13 @@ namespace Blaster.Weapon
         {
             _bulletCount = bulletCount;
             _weaponView.SetHitText(bulletCount.ToString());
+        }
+        public bool IsWeaponIdle()
+        {
+            Debug.Log("_targetsInRange.Count : " + _targetsInRange.Count);
+            Debug.Log("_currentWeaponState : " + _currentWeaponState);
+            Debug.Log("_target : " + _target);
+            return _currentWeaponState == WeaponState.Idle && _targetsInRange.Count == 0 && _target == null;
         }
     }
 

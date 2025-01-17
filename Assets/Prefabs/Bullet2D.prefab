@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4895695990564507001}
   - component: {fileID: 284807319064333758}
   - component: {fileID: 2410759401046679733}
-  - component: {fileID: 1695967475433883932}
   - component: {fileID: 130927726022124813}
   m_Layer: 0
   m_Name: Bullet2D
@@ -31,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -134,34 +133,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
---- !u!50 &1695967475433883932
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8187074811217173914}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Radius: 0.4
 --- !u!96 &130927726022124813
 TrailRenderer:
   serializedVersion: 3
@@ -205,7 +177,7 @@ TrailRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Time: 0.1
-  m_PreviewTimeScale: 0
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -213,8 +185,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.053633027
-        value: 0.5069232
+        time: 0.04174643
+        value: 0.32605314
         inSlope: 0.37946814
         outSlope: 0.37946814
         tangentMode: 0
@@ -222,8 +194,8 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.19432074
       - serializedVersion: 3
-        time: 0.24225527
-        value: 0.30585185
+        time: 0.23631197
+        value: 0.27106944
         inSlope: -1.4407302
         outSlope: -1.4407302
         tangentMode: 0

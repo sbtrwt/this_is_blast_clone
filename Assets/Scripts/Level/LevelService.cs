@@ -82,7 +82,9 @@ namespace Blaster.Level
         private void LoadWeapon()
         {
             _weaponService.CreateStage(_currentLevel.StageColumns, _currentLevel.ShooterStageView);
+            _weaponHolderService.ClearWeaponHolder();
             _weaponHolderService.SetWeaponHolder(_currentLevel.ShooterRows, _currentLevel.ShooterColumns);
+            
             _weaponHolderService.FillIntoWeaponHolder( _bulletService, _weaponService, _currentLevel.ShooterTypes);
         }
         public void NextLevel()

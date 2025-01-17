@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1577806815550435997}
   - component: {fileID: 3996396992471054409}
-  - component: {fileID: 3711482806677622533}
   - component: {fileID: 5648467154180797446}
+  - component: {fileID: 8407289957487864221}
+  - component: {fileID: 234398896165777171}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -87,8 +88,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &3711482806677622533
-BoxCollider2D:
+--- !u!114 &5648467154180797446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2998962046427814545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2c64c458b1daf14298b8212ad72c942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 3996396992471054409}
+  smokePartilce: {fileID: 1325763479514301380}
+--- !u!58 &8407289957487864221
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -119,33 +134,36 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0056021735, y: -0.009337015}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.94017303, y: 0.9457143}
-    newSize: {x: 0.65, y: 0.67}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.22423212, y: 0.22182332}
-  m_EdgeRadius: 0
---- !u!114 &5648467154180797446
-MonoBehaviour:
+  m_Radius: 0.47285715
+--- !u!50 &234398896165777171
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2998962046427814545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2c64c458b1daf14298b8212ad72c942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 3996396992471054409}
-  smokePartilce: {fileID: 1325763479514301380}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &2256262577264833283
 PrefabInstance:
   m_ObjectHideFlags: 0

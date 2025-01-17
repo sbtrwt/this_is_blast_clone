@@ -1,4 +1,5 @@
 ﻿using Blaster.Targets;
+using Blaster.Weapon;
 using UnityEngine;
 
 namespace Blaster.Target
@@ -18,7 +19,7 @@ namespace Blaster.Target
         public int GridColumn { get => _gridColumn; set => _gridColumn = value; }
         public TargetType TargetType { get => _targetType; set => _targetType = value; }
         public bool IsLocked { get => _isLocked; set => _isLocked = value; }
-
+        public WeaponController TargetLockedBy { get; set; }
         public TargetController(TargetSO targetSO, TargetService targetService, Transform container)
         {
             _targetSO = targetSO;

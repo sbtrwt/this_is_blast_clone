@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GreenShooter
   m_EditorClassIdentifier: 
   WeaponView: {fileID: 5407762897007717339, guid: 871180b3590679146aeb2805583faf50, type: 3}
-  FireRate: 0.1
+  FireRate: 0.2
   BulletCount: 10
   TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}

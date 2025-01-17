@@ -44,8 +44,10 @@ namespace Blaster.Target
             _soundService.PlaySoundEffects(SoundType.TargetPop);
             targets.Remove(targetController);
             _gridService.DestroyBottomTile(targetController.GridColumn);
-            Debug.Log("target count:    " + targets.Count);
-            Debug.Log("target count:    " + _targetCount);
+            //targetController.IsLocked = false;
+            //targetController.IsActive = true;
+            //Debug.Log("target count:    " + targets.Count);
+            //Debug.Log("target count:    " + _targetCount);
             _eventService.OnUpdateProgress.InvokeEvent((float)targets.Count/_targetCount);
             if(targets.Count == 0)
             {
@@ -60,5 +62,17 @@ namespace Blaster.Target
             tempSmoke.Play();
             GameObject.Destroy(tempSmoke.gameObject, 1f);
         }
+        public void ResetTargets()
+        {
+            foreach (var target in targets)
+            {
+                GameObject.Destroy(target.GetTransform().gameObject);
+            }
+            targets.Clear();
+        }
+        public void ResetTargetCount()
+        {
+            _targetCount = 0;
+        }   
     }
 }

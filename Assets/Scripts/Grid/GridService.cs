@@ -36,7 +36,8 @@ namespace Blaster.Grid
             _rows = rows;
             _columnsCount = columns;
             _columns = new List<Queue<TileController>>();
-
+            _targetService.ResetTargetCount();
+            _targetService.ResetTargets();
             for (int column = 0; column < columns; column++)
             {
                 var columnQueue = new Queue<TileController>();
