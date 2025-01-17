@@ -1,5 +1,6 @@
 ﻿using Blaster.Bullet;
 using Blaster.Events;
+using Blaster.Sound;
 using Blaster.Target;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Blaster.Weapon
         private List<WeaponController> weapons = new List<WeaponController>();
 
         private BulletService _bulletService;
+        private SoundService _soundService;
+
         private WeaponSO _weaponSO;
         private Transform _weaponContainer;
         private EventService _eventService;
@@ -24,11 +27,12 @@ namespace Blaster.Weapon
 
             this._weaponContainer = container;
         }
-        public void Init(BulletService bulletService, EventService eventService, WeaponHolderService weaponHolderService)
+        public void Init(BulletService bulletService, EventService eventService, WeaponHolderService weaponHolderService, SoundService soundService)
         {
             this._bulletService = bulletService;
             this._eventService = eventService;
             this._weaponHolderService = weaponHolderService;
+            this._soundService = soundService;
             //CreateWeapon(_weaponSO, _weaponContainer);
             SubscribeToEvents();
             //CreateStage(2);
@@ -176,6 +180,10 @@ namespace Blaster.Weapon
                 stage.IsFilled = false;
                 weapon.IsActive = false;
             }
+        }
+        public void OnWeaponFire()
+        {
+            _soundService.PlaySoundEffects(SoundType.Shoot);
         }
         ~WeaponService()
         {

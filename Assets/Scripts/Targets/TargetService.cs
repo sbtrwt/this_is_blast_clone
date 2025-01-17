@@ -1,5 +1,6 @@
 ﻿using Blaster.Events;
 using Blaster.Grid;
+using Blaster.Sound;
 using Blaster.Targets;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,21 @@ namespace Blaster.Target
     {
         private GridService _gridService;
         private EventService _eventService;
+        private SoundService _soundService;
         private List<TargetController> targets = new List<TargetController>();
         private TargetSO _targetSO;
         private int _targetCount = 0;
-        public TargetService(TargetSO targetSO)
+        private ParticleSystem _smokeParticle;
+        public TargetService(TargetSO targetSO, ParticleSystem smokeParticle)
         {
             _targetSO = targetSO;
+            _smokeParticle = smokeParticle;
         }
-        public void Init(GridService gridService, EventService eventService)
+        public void Init(GridService gridService, EventService eventService, SoundService soundService)
         {
             this._gridService = gridService;
             this._eventService = eventService;
+            this._soundService = soundService;
         }
         public TargetController CreateTarget(Transform container)
         {
@@ -35,6 +40,8 @@ namespace Blaster.Target
         }
         public void RemoveTarget(TargetController targetController)
         {
+            ShowSmokeEffect(targetController.GetTransform().position);
+            _soundService.PlaySoundEffects(SoundType.TargetPop);
             targets.Remove(targetController);
             _gridService.DestroyBottomTile(targetController.GridColumn);
             Debug.Log("target count:    " + targets.Count);
@@ -44,6 +51,14 @@ namespace Blaster.Target
             {
                 _eventService.OnGameEnd.InvokeEvent(true);
             }
+        }
+        public void ShowSmokeEffect(Vector3 position)
+        {
+            var tempSmoke = GameObject.Instantiate(_smokeParticle);
+            position.z = -3;
+            tempSmoke.transform.position = position;
+            tempSmoke.Play();
+            GameObject.Destroy(tempSmoke.gameObject, 1f);
         }
     }
 }

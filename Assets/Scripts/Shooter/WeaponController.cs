@@ -64,6 +64,7 @@ namespace Blaster.Weapon
                 _bulletCount--;
                 _weaponView.SetHitText(_bulletCount.ToString());
                 _weaponView.PlaySmokeParticle();
+                _weaponService.OnWeaponFire();
                 if (_bulletCount == 0)
                 {
                     _weaponService.RemoveWeaponFromStage(this);
@@ -117,7 +118,7 @@ namespace Blaster.Weapon
                 Debug.Log("update _target :     " + _target.TargetType);
                 Debug.Log("update _targetsInRange.Count : " + _targetsInRange.Count);
 
-                if (_target != null && _target.IsActive && _target.TargetType == _targetType)
+                if (_target != null && _target.IsActive  && !_target.IsLocked && _target.TargetType == _targetType)
                 {
                     
                     RotateTowardsTarget();
@@ -131,9 +132,11 @@ namespace Blaster.Weapon
             else
             {
                 _target = null;
+                _currentWeaponState = WeaponState.Idle;
             }
 
             _fireRate -= Time.deltaTime; // Decrease fireRate over time
+            Debug.Log(_currentWeaponState);
         }
 
         private void ShootAtTarget(TargetController targetEnemy)

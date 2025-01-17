@@ -75,6 +75,7 @@ namespace Blaster.Level
 
         private void LoadGrid()
         {
+            _gridService.CleanGrid();
             _gridService.CreateGrid(_currentLevel.Rows, _currentLevel.Columns, _currentLevel.TileView, _gridContainer, _currentLevel.TargetTypes);
             _gridService.OnTargetsLoaded();
         }

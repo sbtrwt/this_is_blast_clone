@@ -38,7 +38,7 @@ namespace Blaster.Target
             if (_health <= 0)
             {
                 Debug.Log("Target destroyed");
-                _targetView.PlaySmokeParticle();
+                //_targetView.PlaySmokeParticle();
                 DestroyBlock();
                 _targetService.RemoveTarget(this);
             }

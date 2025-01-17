@@ -77,7 +77,20 @@ namespace Blaster.Grid
         }
 
 
-
+        public void CleanGrid()
+        {
+            if (_columns != null)
+            {
+                for (int column = 0; column < _columnsCount; column++)
+                {
+                    while (_columns[column].Count > 0)
+                    {
+                        var tile = _columns[column].Dequeue();
+                        GameObject.Destroy(tile._tileView.gameObject);
+                    }
+                }
+            }
+        }
         public TileController GetBottomTile(int column)
         {
             if (column < 0 || column >= _columnsCount || _columns[column].Count == 0)

@@ -21,12 +21,14 @@ public class UIService : MonoBehaviour
     [Header("Gameplay")]
     [SerializeField] private TMPro.TMP_Text _progressLevelText;
     [SerializeField] private Image _progressImage;
-
+    [SerializeField] private Button _restartMenuButton;
     private int _levelIndex;
     // Start is called before the first frame update
     void Start()
     {
         _nextLevelButton.onClick.AddListener(OnNextLevel);
+        _restartButton.onClick.AddListener(OnRestart);
+        _restartMenuButton.onClick.AddListener(OnRestart);
     }
 
     public void Init(EventService eventService, LevelService levelService)
@@ -46,7 +48,7 @@ public class UIService : MonoBehaviour
         _eventService.OnUpdateProgress.RemoveListener(SetProgress);
         _eventService.OnGameStart.RemoveListener(OnGameStart);
         _eventService.OnGameEnd.RemoveListener(ShowGameOverPanel);
-        _restartButton.onClick.AddListener(OnRestart);
+       
     }
     public void SetProgress(float progress)
     {
@@ -55,7 +57,7 @@ public class UIService : MonoBehaviour
     public void OnNextLevel() { _levelService.NextLevel(); }
     public void OnRestart()
     {
-
+        _eventService.OnGameStart.InvokeEvent(_levelIndex);
     }
     public void OnGameStart(int levelIndex)
     {
