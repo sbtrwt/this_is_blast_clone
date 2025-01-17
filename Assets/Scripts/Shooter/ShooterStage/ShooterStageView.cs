@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShooterStageView : MonoBehaviour
+namespace Blaster.Weapon
 {
-    public ShooterStageController Controller;
+    public class ShooterStageView : MonoBehaviour
+    {
+        public ShooterStageController Controller;
+    }
 }

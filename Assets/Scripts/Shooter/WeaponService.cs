@@ -1,16 +1,9 @@
-﻿using Blaster.Interfaces;
-using Blaster.Bullet;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using Blaster.Bullet;
 using Blaster.Events;
-using System.Xml.Linq;
 using Blaster.Target;
-using UnityEditor.Experimental.GraphView;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Blaster.Weapon
 {
@@ -28,7 +21,7 @@ namespace Blaster.Weapon
         public WeaponService(WeaponSO weaponSO, Transform container)
         {
             this._weaponSO = weaponSO;
-          
+
             this._weaponContainer = container;
         }
         public void Init(BulletService bulletService, EventService eventService, WeaponHolderService weaponHolderService)
@@ -40,15 +33,15 @@ namespace Blaster.Weapon
             SubscribeToEvents();
             //CreateStage(2);
             //_weaponHolderService.FillIntoWeaponHolder(_weaponSO, _bulletService, this);
-        
+
         }
-        
+
         public void SubscribeToEvents()
         {
             _eventService.OnTargetLoaded.AddListener(SetTargetInRange);
             _eventService.OnNewColumnTarget.AddListener(AddTarget);
             _eventService.OnTargetRemoved.AddListener(RemoveTarget);
-          
+
         }
         public void unSubscribeToEvents()
         {
@@ -97,11 +90,11 @@ namespace Blaster.Weapon
                     stage.WeaponController?.RemoveTarget(target);
                 }
             }
-           
+
         }
         public void Update()
         {
-           
+
             foreach (var stage in _stages)
             {
                 stage.WeaponController?.Update();
@@ -149,14 +142,14 @@ namespace Blaster.Weapon
                 weapon.SetTargetInRange(_targetControllers);
             }
         }
-        public void UpdateTargets() 
-        { 
-            foreach(var stage in _stages)
+        public void UpdateTargets()
+        {
+            foreach (var stage in _stages)
             {
                 stage.WeaponController?.SetTargetInRange(_targetControllers);
             }
         }
-    
+
         public void RemoveWeaponFromStage(WeaponController weapon)
         {
             var stage = _stages.FirstOrDefault(x => x.WeaponController == weapon);

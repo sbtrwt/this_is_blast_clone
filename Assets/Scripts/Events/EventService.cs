@@ -13,6 +13,8 @@ namespace Blaster.Events
         public EventController<bool> OnGamePause { get; private set; }
         public EventController<bool> OnGameResume { get; private set; }
         public EventController<bool> OnGameEnd { get; private set; }
+
+        public EventController<float> OnUpdateProgress { get; private set; }
         #endregion
         public EventController<List<TargetController>> OnTargetLoaded { get; private set; }
         public EventController<TargetController> OnNewColumnTarget { get; private set; }
@@ -32,6 +34,7 @@ namespace Blaster.Events
             OnGamePause = new EventController<bool>();
             OnGameResume = new EventController<bool>();
             OnGameEnd = new EventController<bool>();
+            OnUpdateProgress = new EventController<float>();
         }
 
     }

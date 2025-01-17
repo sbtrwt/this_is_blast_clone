@@ -20,6 +20,7 @@ namespace Blaster
         private TargetService _targetService;
         private WeaponHolderService _weaponHolderService;
         private LevelService _levelService;
+        [SerializeField] private UIService _uiService;
         #endregion
 
         #region SOs
@@ -62,9 +63,10 @@ namespace Blaster
             _weaponService.Init(_bulletService, _eventService, _weaponHolderService);
             //_weaponService.SetTargetInRange(_targets);
             _gridService.Init(_eventService, _targetService);
-            _targetService.Init(_gridService);
+            _targetService.Init(_gridService, _eventService);
             _weaponHolderService.Init(_weaponService);
             _levelService.Init(_gridService, _eventService, _weaponHolderService, _bulletService, _weaponService);
+            _uiService.Init(_eventService);
         }
         // Update is called once per frame
         private void Update()
