@@ -40,6 +40,7 @@ namespace Blaster.Bullet
                 collidedGameObject.GetComponent<IDamageable>().TakeDamage(bulletSO.Damage);
                 //GameService.Instance.GetSoundService().PlaySoundEffects(SoundType.BulletHit);
                 //GameService.Instance.GetVFXService().PlayVFXAtPosition(VFXType.BulletHitExplosion, bulletView.transform.position);
+                
                 bulletView.gameObject.SetActive(false);
                 objectPoolHandler.ReturnItem(this);
             }

@@ -15,7 +15,7 @@ MonoBehaviour:
   LevelIndex: 3
   Rows: 20
   Columns: 5
-  StageColumns: 2
+  StageColumns: 4
   ShooterStageView: {fileID: 7736268081153827064, guid: 3d3f219a80cb6c148bc6be5a3623e66e, type: 3}
   TileView: {fileID: 4865449205267597072, guid: 8eafaaee4e8454f4ba29d712490797ce, type: 3}
   TargetTypes:
@@ -344,5 +344,5 @@ MonoBehaviour:
     WeaponSO: {fileID: 11400000, guid: 7202a77cbaaea6c418e09ad2fbd7f1e4, type: 2}
   - X: 2
     Y: 1
-    BulletCount: 20
+    BulletCount: 10
     WeaponSO: {fileID: 11400000, guid: 91afda8f314a6b34e8c6929b92c378b0, type: 2}
