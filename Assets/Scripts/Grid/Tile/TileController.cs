@@ -61,6 +61,7 @@ namespace Blaster.Grid
         public TargetController RemoveTarget()
         {
             TargetController targetController = _targetControllers.Pop();
+            targetController.IsActive = false;
             //_targetService.RemoveTarget(targetController);
             return targetController;
         }

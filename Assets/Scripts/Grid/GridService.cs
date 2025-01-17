@@ -54,9 +54,9 @@ namespace Blaster.Grid
                         targetController.GridColumn = column;
 
                         // Find the TargetData for this position
-                        var targetData = targetTypes.Find(p => p.X == row && p.Y == column);
-                        
-                            targetController.TargetType = targetData.TargetType; // Assign TargetType
+                        var targetData = targetTypes.Find(p => p.X == column && p.Y == row);
+                        //Debug.LogError(targetData.TargetType);
+                        targetController.TargetType = targetData.TargetType; // Assign TargetType
                         targetController.SetColor(targetController.TargetType.Color);
                         targetControllers.Push(targetController);
                     }

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86d3aa27a9e07ab4782bcc7bc8776d86, type: 3}
-  m_Name: Level1SO
+  m_Name: Level2SO
   m_EditorClassIdentifier: 
   LevelIndex: 1
-  Rows: 2
+  Rows: 4
   Columns: 2
-  StageColumns: 2
-  ShooterStageView: {fileID: 0}
+  StageColumns: 4
+  ShooterStageView: {fileID: 7736268081153827064, guid: 3d3f219a80cb6c148bc6be5a3623e66e, type: 3}
   TileView: {fileID: 4865449205267597072, guid: 8eafaaee4e8454f4ba29d712490797ce, type: 3}
   TargetTypes:
   - X: 0
@@ -30,6 +30,18 @@ MonoBehaviour:
     TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
   - X: 1
     Y: 1
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 0
+    Y: 2
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 2
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 0
+    Y: 3
+    TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  - X: 1
+    Y: 3
     TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
   ShooterRows: 2
   ShooterColumns: 1

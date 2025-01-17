@@ -25,7 +25,7 @@ namespace Blaster.Level
         private LevelSO _currentLevel;
         private int _currentLevelIndex;
         private Transform _gridContainer;
-       
+        //private ShooterStageView _shooterStageView;
         public LevelService(GameLevel gameLevel, Transform gridContainer ) 
         { 
             _gameLevel = gameLevel;
@@ -80,6 +80,7 @@ namespace Blaster.Level
         }
         private void LoadWeapon()
         {
+            _weaponService.CreateStage(_currentLevel.StageColumns, _currentLevel.ShooterStageView);
             _weaponHolderService.SetWeaponHolder(_currentLevel.ShooterRows, _currentLevel.ShooterColumns);
             _weaponHolderService.FillIntoWeaponHolder( _bulletService, _weaponService, _currentLevel.ShooterTypes);
         }

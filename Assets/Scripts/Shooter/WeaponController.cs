@@ -17,7 +17,7 @@ namespace Blaster.Weapon
         private BulletPool _bulletPool;
         private float _fireRate;
         private WeaponSO _weaponSO;
-        private List<TargetController> _targetsInRange = new List<TargetController>();
+        private List<TargetController> _targetsInRange ;
         private TargetController _target;
         private bool _isActive = false;
         private WeaponState _currentWeaponState;
@@ -34,6 +34,7 @@ namespace Blaster.Weapon
 
         public WeaponController(WeaponSO weaponSO, Transform container, WeaponService weaponService)
         {
+            _targetsInRange = new List<TargetController>();
             this._weaponSO = weaponSO;
             this._weaponView = GameObject.Instantiate(weaponSO.WeaponView, container);
             _weaponView.Controller = this;
@@ -94,6 +95,10 @@ namespace Blaster.Weapon
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
             }
+            else
+            {
+                _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            }
         }
 
         public void Update()
@@ -101,10 +106,13 @@ namespace Blaster.Weapon
             if (_targetsInRange != null && _targetsInRange.Count > 0)
             {
                 _target = _targetsInRange[0];
-               
+                Debug.Log("update _targetType : " + _targetType);
+                Debug.Log("update _target :     " + _target.TargetType);
+                Debug.Log("update _targetsInRange.Count : " + _targetsInRange.Count);
 
                 if (_target != null && _target.IsActive && _target.TargetType == _targetType)
                 {
+                    
                     RotateTowardsTarget();
                     ShootAtTarget(_target);
                 }
@@ -147,12 +155,15 @@ namespace Blaster.Weapon
                 if (_targetsInRange.Contains(target) == false)
                     AddTarget(target);
             }
+            Debug.Log("_targetType : " + _targetType);
+            Debug.Log("_targetsInRange.Count : " + _targetsInRange.Count);
+           
         }
         public void AddTarget(TargetController target)
         {
-            //Debug.Log("AddTarget : " + target);
-            //Debug.Log(target.TargetType);
-            //Debug.Log(_targetType);
+            Debug.Log("AddTarget : " + target);
+            Debug.Log(target.TargetType);
+            Debug.Log(_targetType);
 
             if (target != null && target.IsActive && target.TargetType == _targetType)
             { _targetsInRange.Add(target); }

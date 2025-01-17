@@ -10,6 +10,7 @@ using UnityEngine;
 using Blaster.Events;
 using System.Xml.Linq;
 using Blaster.Target;
+using UnityEditor.Experimental.GraphView;
 
 namespace Blaster.Weapon
 {
@@ -23,7 +24,7 @@ namespace Blaster.Weapon
         private EventService _eventService;
         private WeaponHolderService _weaponHolderService;
         private List<TargetController> _targetControllers = new List<TargetController>();
-        private List<WeaponStage> _stages = new List<WeaponStage>();
+        private List<ShooterStageController> _stages = new List<ShooterStageController>();
         public WeaponService(WeaponSO weaponSO, Transform container)
         {
             this._weaponSO = weaponSO;
@@ -37,7 +38,7 @@ namespace Blaster.Weapon
             this._weaponHolderService = weaponHolderService;
             //CreateWeapon(_weaponSO, _weaponContainer);
             SubscribeToEvents();
-            CreateStage(2);
+            //CreateStage(2);
             //_weaponHolderService.FillIntoWeaponHolder(_weaponSO, _bulletService, this);
         
         }
@@ -69,6 +70,7 @@ namespace Blaster.Weapon
         }
         public void SetTargetInRange(List<TargetController> targets)
         {
+            Debug.Log("Set Target");
             _targetControllers = new List<TargetController>();
             foreach (var target in targets)
             {
@@ -79,14 +81,23 @@ namespace Blaster.Weapon
         }
         public void AddTarget(TargetController target)
         {
+            Debug.Log("Add Target");
             if (target != null)
                 _targetControllers.Add(target);
             UpdateTargets();
         }
         public void RemoveTarget(TargetController target)
         {
-            if(target != null)
-            _targetControllers.Remove(target);
+            Debug.Log("Remove Target");
+            if (target != null)
+            {
+                _targetControllers.Remove(target);
+                foreach (var stage in _stages)
+                {
+                    stage.WeaponController?.RemoveTarget(target);
+                }
+            }
+           
         }
         public void Update()
         {
@@ -104,18 +115,19 @@ namespace Blaster.Weapon
         {
             weapons.Add(weapon);
         }
-        public void CreateStage(int count)
+        public void CreateStage(int count, ShooterStageView stagePrefab)
         {
             for (int i = 0; i < count; i++)
             {
-                WeaponStage stage = new WeaponStage();
+                ShooterStageController stage = new ShooterStageController(stagePrefab, _weaponContainer);
                 stage.IsActive = true;
                 stage.IsFilled = false;
                 stage.Position = new Vector2(i, 0);
+                stage.SetLocalPosition(stage.Position);
                 _stages.Add(stage);
             }
         }
-        public WeaponStage GetEmtpyWeaponStage()
+        public ShooterStageController GetEmtpyWeaponStage()
         {
             return _stages.FirstOrDefault(x => x.IsFilled == false);
         }
@@ -144,6 +156,7 @@ namespace Blaster.Weapon
                 stage.WeaponController?.SetTargetInRange(_targetControllers);
             }
         }
+    
         public void RemoveWeaponFromStage(WeaponController weapon)
         {
             var stage = _stages.FirstOrDefault(x => x.WeaponController == weapon);
@@ -158,13 +171,5 @@ namespace Blaster.Weapon
         {
             unSubscribeToEvents();
         }
-    }
-
-    public class WeaponStage
-    {
-        public bool IsFilled { get; set; }
-        public bool IsActive { get; set; }
-        public WeaponController WeaponController { get; set; }
-        public Vector2 Position { get; set; }
     }
 }
