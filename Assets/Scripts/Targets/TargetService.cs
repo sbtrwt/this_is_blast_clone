@@ -12,7 +12,7 @@ namespace Blaster.Target
 {
     public class TargetService
     {
-       private GridService _gridService;
+        private GridService _gridService;
         private EventService _eventService;
         private List<TargetController> targets = new List<TargetController>();
         private TargetSO _targetSO;
@@ -40,6 +40,10 @@ namespace Blaster.Target
             Debug.Log("target count:    " + targets.Count);
             Debug.Log("target count:    " + _targetCount);
             _eventService.OnUpdateProgress.InvokeEvent((float)targets.Count/_targetCount);
+            if(targets.Count == 0)
+            {
+                _eventService.OnGameEnd.InvokeEvent(true);
+            }
         }
     }
 }

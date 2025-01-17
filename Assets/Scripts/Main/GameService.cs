@@ -66,7 +66,7 @@ namespace Blaster
             _targetService.Init(_gridService, _eventService);
             _weaponHolderService.Init(_weaponService);
             _levelService.Init(_gridService, _eventService, _weaponHolderService, _bulletService, _weaponService);
-            _uiService.Init(_eventService);
+            _uiService.Init(_eventService, _levelService);
         }
         // Update is called once per frame
         private void Update()

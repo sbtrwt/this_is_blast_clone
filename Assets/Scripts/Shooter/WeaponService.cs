@@ -110,6 +110,8 @@ namespace Blaster.Weapon
         }
         public void CreateStage(int count, ShooterStageView stagePrefab)
         {
+            RemoveStage();
+            _stages = new List<ShooterStageController>();
             for (int i = 0; i < count; i++)
             {
                 ShooterStageController stage = new ShooterStageController(stagePrefab, _weaponContainer);
@@ -118,6 +120,21 @@ namespace Blaster.Weapon
                 stage.Position = new Vector2(i, 0);
                 stage.SetLocalPosition(stage.Position);
                 _stages.Add(stage);
+            }
+        }
+        public void RemoveStage()
+        {
+            if (_stages != null && _stages.Count > 0)
+            {
+                for (int i = 0; i < _stages.Count; i++)
+                {
+                    if (_stages[i].IsFilled == true)
+                    {
+                        _stages[i].WeaponController.IsActive = false;
+                        _stages[i].WeaponController.DestroyWeapon();
+                        
+                    }
+                }
             }
         }
         public ShooterStageController GetEmtpyWeaponStage()

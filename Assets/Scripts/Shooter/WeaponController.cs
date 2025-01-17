@@ -103,6 +103,7 @@ namespace Blaster.Weapon
 
         public void Update()
         {
+            if(_weaponView == null || !IsActive) { return; }
             if (_targetsInRange != null && _targetsInRange.Count > 0)
             {
                 _target = _targetsInRange[0];

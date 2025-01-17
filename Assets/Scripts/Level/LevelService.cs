@@ -84,6 +84,10 @@ namespace Blaster.Level
             _weaponHolderService.SetWeaponHolder(_currentLevel.ShooterRows, _currentLevel.ShooterColumns);
             _weaponHolderService.FillIntoWeaponHolder( _bulletService, _weaponService, _currentLevel.ShooterTypes);
         }
+        public void NextLevel()
+        {
+            _eventService.OnGameStart.InvokeEvent(_currentLevelIndex + 1);
+        }
         ~LevelService()
         {
             UnsubscribeToEvents();
