@@ -138,6 +138,17 @@ namespace Blaster.Grid
             {
                 _eventService.OnNewColumnTarget?.InvokeEvent(newBottomTile.GetTopTargetController());
             }
+            else
+            {
+                for (int i = 0; i < _columnsCount; i++)
+                {
+                    newBottomTile = GetBottomTile(i);
+                    if (newBottomTile != null)
+                    {
+                        _eventService.OnNewColumnTarget?.InvokeEvent(newBottomTile.GetTopTargetController());
+                    }
+                }
+            }
 
             // Shift tiles visually
             int currentRow = 0;

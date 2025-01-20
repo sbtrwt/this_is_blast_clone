@@ -74,14 +74,15 @@ namespace Blaster.Weapon
                 if (target != null)
                     _targetControllers.Add(target);
             }
-            UpdateTargets();
+            //UpdateTargets();
         }
         public void AddTarget(TargetController target)
         {
-            Debug.Log("Add Target");
-            if (target != null)
+            //Debug.Log("Add Target");
+            //Debug.Log(target);
+            if (target != null && !(_targetControllers.Contains(target)))
                 _targetControllers.Add(target);
-            UpdateTargets();
+            //UpdateTargets();
         }
         public void RemoveTarget(TargetController target)
         {
@@ -98,7 +99,7 @@ namespace Blaster.Weapon
         }
         public void Update()
         {
-
+            UpdateTargets();
             foreach (var stage in _stages)
             {
                 stage.WeaponController?.Update();
@@ -215,7 +216,7 @@ namespace Blaster.Weapon
 
             foreach (var stage in _stages)
             {
-                if (stage.WeaponController != null && stage.WeaponController.IsWeaponIdle())
+                if (stage.WeaponController != null && stage.WeaponController.IsWeaponIdleFor(0f))
                 {
                     isAllIdle = true;
                 }

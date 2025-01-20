@@ -2,10 +2,10 @@
 using Blaster.Interfaces;
 using Blaster.Target;
 using Blaster.Targets;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 namespace Blaster.Weapon
 {
     public class WeaponController : IFireable
@@ -21,8 +21,10 @@ namespace Blaster.Weapon
         private List<TargetController> _targetsInRange;
         private TargetController _target;
         private bool _isActive = false;
+        private bool _hasFired = false; // New flag for single fire
         private WeaponState _currentWeaponState;
         private int _bulletCount;
+        private float _idleTimer = 0f; // To track idle time
         private TargetType _targetType => _weaponSO.TargetType;
 
         public WeaponState CurrentWeaponState { get => _currentWeaponState; }
@@ -31,7 +33,7 @@ namespace Blaster.Weapon
             get => _isActive;
             set => _isActive = value;
         }
-        public bool CanFire => _isActive && _fireRate <= 0 && _bulletCount > 0;
+        public bool CanFire => _isActive && _fireRate <= 0 && _bulletCount > 0 && !_hasFired; // Include HasFired condition
 
         public WeaponController(WeaponSO weaponSO, Transform container, WeaponService weaponService)
         {
@@ -44,49 +46,61 @@ namespace Blaster.Weapon
             _weaponService = weaponService;
             _bulletCount = weaponSO.BulletCount;
             _weaponView.SetColor(_weaponSO.TargetType.Color);
-            _weaponView.SetHitText(weaponSO.BulletCount.ToString());
+            _weaponView.SetHitText(_weaponSO.BulletCount.ToString());
         }
 
         public void Init(BulletService bulletService, WeaponHolderService weaponHolderService)
         {
             _weaponHolderService = weaponHolderService;
-            this._bulletService = bulletService;
+            _bulletService = bulletService;
             _bulletPool = bulletService.BulletPool;
-
         }
 
         public void Fire(Vector2 fireDirection)
         {
-            if (CanFire)
+            if (CanFire )
             {
                 BulletController bulletToFire = _bulletPool.GetBullet();
-                bulletToFire.ConfigureBullet(_weaponView.GunPoint.position, fireDirection.normalized);
-                ResetAttackTimer();
+                bulletToFire.ConfigureBullet(_weaponView.GunPoint.position, fireDirection.normalized, _target.GetTransform().position);
                 _bulletCount--;
+                _hasFired = true; // Set HasFired to true after firing
                 _weaponView.SetHitText(_bulletCount.ToString());
                 _weaponView.PlaySmokeParticle();
                 _weaponService.OnWeaponFire();
+                _target.TakeDamage(1);
+               
+              //_target.TargetHitCounter++;
+              //  if (_target.TargetHitCounter > 1)
+              //  Debug.Log("Target Hit Counter: " + _target.TargetHitCounter);
+
+                //_target.IsTargetGotHit = true;
                 if (_bulletCount == 0)
                 {
                     _weaponService.RemoveWeaponFromStage(this);
-                    foreach(var target in _targetsInRange)
-                    {
-                        target.IsLocked = false;
-                        target.TargetLockedBy = null;
-                    }
+                    UnlockTargets();
                     DestroyWeapon();
                 }
+                ResetAttackTimer();
+                _target = null;
             }
-
         }
+
         public void DestroyWeapon()
         {
+            UnlockTargets();
             GameObject.Destroy(_weaponView.gameObject);
         }
 
-        public void Reload()
+        private void UnlockTargets()
         {
-            throw new NotImplementedException();
+            foreach (var target in _targetsInRange)
+            {
+                if (target.TargetLockedBy == this)
+                {
+                    target.IsLocked = false;
+                    target.TargetLockedBy = null;
+                }
+            }
         }
 
         public void Rotate(Vector2 direction)
@@ -102,113 +116,91 @@ namespace Blaster.Weapon
         {
             if (_target != null && _target.GetTransform() != null)
             {
-                Debug.Log(_target.GetTransform());
                 Vector3 direction = _target.GetTransform().position - _weaponView.GunPoint.transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-            }
-            else
-            {
-                _weaponView.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             }
         }
 
         public void Update()
         {
-            if (_weaponView == null || !IsActive) { return; }
-            //_weaponView.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            if (_weaponView == null || !_isActive || _currentWeaponState == WeaponState.Shooting) return;
+
             if (_targetsInRange != null && _targetsInRange.Count > 0)
             {
-                _target = _targetsInRange.FirstOrDefault(x => !x.IsLocked || x.TargetLockedBy == this);
-                //Debug.Log("update _targetType : " + _targetType);
-                //Debug.Log("update _target :     " + _target.TargetType);
-                //Debug.Log("update _targetsInRange.Count : " + _targetsInRange.Count);
+                _target = _targetsInRange.FirstOrDefault(x => !x.IsTargetGotHit && (!x.IsLocked || x.TargetLockedBy == this) );
 
-                if (_target != null && _target.IsActive && (!_target.IsLocked || _target.TargetLockedBy == this) && _target.TargetType == _targetType)
+                if (_target != null)
                 {
-
                     RotateTowardsTarget();
-                    ShootAtTarget(_target);
+                    if (!_hasFired) // Prevent repeated firing
+                    {
+                        ShootAtTarget(_target);
+                    }
                 }
                 else
                 {
-                    _currentWeaponState = WeaponState.Idle;
+                    ResetFireState();
                 }
             }
             else
             {
-                _target = null;
-                _currentWeaponState = WeaponState.Idle;
+                ResetFireState();
             }
 
             _fireRate -= Time.deltaTime; // Decrease fireRate over time
-            //Debug.Log(_currentWeaponState);
         }
 
         private void ShootAtTarget(TargetController targetEnemy)
         {
-            if (CanFire && targetEnemy != null && targetEnemy.IsActive && (!targetEnemy.IsLocked || _target.TargetLockedBy == this))
+            if (CanFire && targetEnemy != null && targetEnemy.IsActive && !targetEnemy.IsTargetGotHit)
             {
                 targetEnemy.IsLocked = true;
                 targetEnemy.TargetLockedBy = this;
+               // Mark the target as hit
                 _currentWeaponState = WeaponState.Shooting;
+
+                // Calculate fire direction
                 Vector2 fireDirection = (targetEnemy.GetTransform().position - _weaponView.GunPoint.transform.position).normalized;
+
+                // Fire at the target
                 Fire(fireDirection);
-            }
-        }
-        public void RemoveTarget(TargetController target)
-        {
-            _targetsInRange.Remove(target);
-            if (_targetsInRange.Count == 0)
-            {
-                _currentWeaponState = WeaponState.Idle;
-            }
-            if (_target == target)
-            {
-                _target = null;
+                //targetEnemy.IsTargetGotHit = true;
             }
         }
 
-        public void SetParent(Transform parent)
+        private void ResetFireState()
         {
-            _weaponView.transform.parent = parent;
+            _currentWeaponState = WeaponState.Idle;
+            _hasFired = false; // Reset HasFired when the target changes or becomes invalid
+            _idleTimer = 0f;
+        }
+
+        public void RemoveTarget(TargetController target)
+        {
+            target.IsActive = false;
+            target.IsLocked = false;
+            target.TargetLockedBy = null;
+            _targetsInRange.Remove(target);
+            ResetFireState();
         }
 
         private void ResetAttackTimer() => _fireRate = _weaponSO.FireRate;
 
         public void SetTargetInRange(List<TargetController> targets)
         {
-            //Debug.Log("Setting targets in range");
-            //_targetsInRange = targets;
             foreach (var target in targets)
             {
-                if (_targetsInRange.Contains(target) == false)
-                    AddTarget(target);
+                if (!_targetsInRange.Contains(target) && target.TargetType == _targetType && !target.IsTargetGotHit)
+                {
+                    _targetsInRange.Add(target);
+                }
             }
-            //Debug.Log("_targetType : " + _targetType);
-            //Debug.Log("_targetsInRange.Count : " + _targetsInRange.Count);
+        }
 
-        }
-        public void AddTarget(TargetController target)
-        {
-            //Debug.Log("AddTarget : " + target);
-            //Debug.Log(target.TargetType);
-            //Debug.Log(_targetType);
-
-            if (target != null && target.IsActive && target.TargetType == _targetType)
-            { _targetsInRange.Add(target); }
-        }
-        public void SetPosition(Vector2 position)
-        {
-            _weaponView.transform.position = position;
-        }
         public void SetLocalPosition(Vector2 position)
         {
             _weaponView.transform.localPosition = position;
-        }
-        public void SetCurrentWeaponState(WeaponState weaponState)
-        {
-            _currentWeaponState = weaponState;
         }
         public bool CheckWeaponInTopRow()
         {
@@ -226,12 +218,20 @@ namespace Blaster.Weapon
             _bulletCount = bulletCount;
             _weaponView.SetHitText(bulletCount.ToString());
         }
-        public bool IsWeaponIdle()
+        public bool IsWeaponIdleFor(float duration)
         {
-            Debug.Log("_targetsInRange.Count : " + _targetsInRange.Count);
-            Debug.Log("_currentWeaponState : " + _currentWeaponState);
-            Debug.Log("_target : " + _target);
-            return _currentWeaponState == WeaponState.Idle && _targetsInRange.Count == 0 && _target == null;
+            // Check if the weapon is in Idle state, has no targets, and no current target
+            if (_currentWeaponState == WeaponState.Idle && _targetsInRange.Count == 0)
+            {
+                _idleTimer += Time.deltaTime; // Increment the idle timer
+                return _idleTimer >= duration; // Return true if idle for the specified duration
+            }
+            _idleTimer = 0f; // Reset the timer if not idle
+            return false;
+        }
+        public void Reload()
+        {
+            throw new System.NotImplementedException();
         }
     }
 

@@ -20,6 +20,8 @@ namespace Blaster.Target
         public TargetType TargetType { get => _targetType; set => _targetType = value; }
         public bool IsLocked { get => _isLocked; set => _isLocked = value; }
         public WeaponController TargetLockedBy { get; set; }
+        public bool IsTargetGotHit { get; set; }
+        public int TargetHitCounter { get; set; }
         public TargetController(TargetSO targetSO, TargetService targetService, Transform container)
         {
             _targetSO = targetSO;
@@ -35,6 +37,7 @@ namespace Blaster.Target
         {
             if (!_isActive) { return; }
             _health -= damage;
+            IsTargetGotHit = true;
             Debug.Log("Target attacked");
             if (_health <= 0)
             {
