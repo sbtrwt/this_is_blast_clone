@@ -173,7 +173,7 @@ namespace Blaster.Weapon
         {
             _currentWeaponState = WeaponState.Idle;
             _hasFired = false; // Reset HasFired when the target changes or becomes invalid
-            _idleTimer = 0f;
+            //_idleTimer = 0f;
         }
 
         public void RemoveTarget(TargetController target)
@@ -182,6 +182,10 @@ namespace Blaster.Weapon
             target.IsLocked = false;
             target.TargetLockedBy = null;
             _targetsInRange.Remove(target);
+            if(_target == target)
+            {
+                _target = null;
+            }
             ResetFireState();
         }
 
@@ -221,7 +225,7 @@ namespace Blaster.Weapon
         public bool IsWeaponIdleFor(float duration)
         {
             // Check if the weapon is in Idle state, has no targets, and no current target
-            if (_currentWeaponState == WeaponState.Idle && _targetsInRange.Count == 0)
+            if (_currentWeaponState == WeaponState.Idle && _targetsInRange.Count == 0 && _target == null)
             {
                 _idleTimer += Time.deltaTime; // Increment the idle timer
                 return _idleTimer >= duration; // Return true if idle for the specified duration

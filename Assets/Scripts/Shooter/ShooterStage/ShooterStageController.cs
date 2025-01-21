@@ -19,5 +19,9 @@ namespace Blaster.Weapon
         {
             _shooterStageView.transform.localPosition = position;
         }
+        public void Destroy()
+        {
+            GameObject.Destroy(_shooterStageView.gameObject);
+        }
     }
 }

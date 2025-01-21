@@ -20,7 +20,7 @@ namespace Blaster.Weapon
         private EventService _eventService;
         private WeaponHolderService _weaponHolderService;
         private List<TargetController> _targetControllers = new List<TargetController>();
-        private List<ShooterStageController> _stages = new List<ShooterStageController>();
+        private List<ShooterStageController> _stages;
         public WeaponService(WeaponSO weaponSO, Transform container)
         {
             this._weaponSO = weaponSO;
@@ -154,8 +154,9 @@ namespace Blaster.Weapon
                     {
                         _stages[i].WeaponController.IsActive = false;
                         _stages[i].WeaponController.DestroyWeapon();
-                        
+                        _stages[i].WeaponController = null;
                     }
+                        _stages[i].Destroy();
                 }
             }
         }
@@ -216,7 +217,7 @@ namespace Blaster.Weapon
 
             foreach (var stage in _stages)
             {
-                if (stage.WeaponController != null && stage.WeaponController.IsWeaponIdleFor(0f))
+                if (stage.WeaponController != null && stage.WeaponController.IsWeaponIdleFor(0.1f))
                 {
                     isAllIdle = true;
                 }
