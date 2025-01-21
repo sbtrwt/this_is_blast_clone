@@ -11,9 +11,11 @@ namespace Blaster.Weapon
         [SerializeField] private SpriteRenderer weaponSprite;
         [SerializeField] private TMPro.TMP_Text hitText;
         [SerializeField] private ParticleSystem smokePartilce;
+        [SerializeField] private Transform outTarget;
 
         public WeaponController Controller;
         public Transform GunPoint => gunPoint;
+        public Transform OutTarget => outTarget;
         public void OnPointerDown(PointerEventData eventData)
         {
             Debug.Log("Pointer down on weapon view.");

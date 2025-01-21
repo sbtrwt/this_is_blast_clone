@@ -2,6 +2,7 @@
 using Blaster.Events;
 using Blaster.Sound;
 using Blaster.Target;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -178,11 +179,32 @@ namespace Blaster.Weapon
             {
                 stage.WeaponController = weapon;
                 stage.IsFilled = true;
-                weapon.IsActive = true;
+                //weapon.IsActive = true;
                 weapon.SetWeaponContainer(_weaponContainer);
-                weapon.SetLocalPosition(stage.Position);
+
+                // Start the animation coroutine
+                Vector3 targetPosition = stage.Position;
+               _gameService. StartCoroutine(MoveWeaponToPosition(weapon, targetPosition, 0.1f)); // Adjust duration as needed
                 weapon.SetTargetInRange(_targetControllers);
             }
+        }
+        private IEnumerator MoveWeaponToPosition(WeaponController weapon, Vector3 targetPosition, float duration)
+        {
+            Vector3 startPosition = weapon.GetLocalPosition();
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / duration;
+
+                // Smooth interpolation
+                weapon.SetLocalPosition(Vector3.Lerp(startPosition, targetPosition, t));
+                yield return null;
+            }
+            weapon.IsActive = true;
+            // Ensure the final position is set
+            weapon.SetLocalPosition(targetPosition);
         }
         public void UpdateTargets()
         {
@@ -207,7 +229,10 @@ namespace Blaster.Weapon
             _soundService.PlaySoundEffects(SoundType.Shoot);
           _gameService.Invoke(nameof( Vibrate), 0.1f);
         }
-
+        public void OnWeaponExit()
+        {
+            _soundService.PlaySoundEffects(SoundType.Exit);
+        }
         private void Vibrate() { Handheld.Vibrate(); }
         public void IsGameOver()
         {

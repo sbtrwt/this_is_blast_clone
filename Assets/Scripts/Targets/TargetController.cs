@@ -1,5 +1,6 @@
 ﻿using Blaster.Targets;
 using Blaster.Weapon;
+using System.Collections;
 using UnityEngine;
 
 namespace Blaster.Target
@@ -43,13 +44,20 @@ namespace Blaster.Target
             {
                 Debug.Log("Target destroyed");
                 //_targetView.PlaySmokeParticle();
-                DestroyBlock();
-                _targetService.RemoveTarget(this);
+                _targetView.PlayDestroyAnimation();
+                //_targetView.Invoke(nameof( DestroyBlock),0.5f);
+                _targetView.StartCoroutine(WaitAndExecuteUnscaled(0.05f));
             }
         }
-
+        private IEnumerator WaitAndExecuteUnscaled(float waitTime)
+        {
+            Debug.Log("Waiting...");
+            yield return new WaitForSecondsRealtime(waitTime);
+            DestroyBlock();
+        }
         private void DestroyBlock()
         {
+            _targetService.RemoveTarget(this);
             UnityEngine.Object.Destroy(_targetView.gameObject);
         }
         public Transform GetTransform()

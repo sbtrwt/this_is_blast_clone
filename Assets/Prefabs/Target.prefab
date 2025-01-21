@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 5648467154180797446}
   - component: {fileID: 8407289957487864221}
   - component: {fileID: 234398896165777171}
+  - component: {fileID: 4329665772391805969}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -207,6 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 3996396992471054409}
+  animator: {fileID: 4329665772391805969}
 --- !u!58 &8407289957487864221
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -269,6 +271,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &4329665772391805969
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2998962046427814545}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b07e8c82f88b1f540b87fa761f4e4c99, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2256262577264833283
 PrefabInstance:
   m_ObjectHideFlags: 0

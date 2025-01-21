@@ -12,6 +12,7 @@ namespace Blaster.Sound
         TargetPop,
         WaveComplete,
         StageShooter,
-        Shoot
+        Shoot,
+        Exit
     }
 }

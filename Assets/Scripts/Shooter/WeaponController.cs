@@ -2,6 +2,7 @@
 using Blaster.Interfaces;
 using Blaster.Target;
 using Blaster.Targets;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace Blaster.Weapon
         private WeaponState _currentWeaponState;
         private int _bulletCount;
         private float _idleTimer = 0f; // To track idle time
+        private Transform _outTarget;
         private TargetType _targetType => _weaponSO.TargetType;
 
         public WeaponState CurrentWeaponState { get => _currentWeaponState; }
@@ -47,6 +49,7 @@ namespace Blaster.Weapon
             _bulletCount = weaponSO.BulletCount;
             _weaponView.SetColor(_weaponSO.TargetType.Color);
             _weaponView.SetHitText(_weaponSO.BulletCount.ToString());
+            _outTarget = _weaponView.OutTarget;
         }
 
         public void Init(BulletService bulletService, WeaponHolderService weaponHolderService)
@@ -88,6 +91,31 @@ namespace Blaster.Weapon
         public void DestroyWeapon()
         {
             UnlockTargets();
+            Vector3 targetPosition = _outTarget.position;
+            _weaponService.OnWeaponExit();
+            _weaponView.StartCoroutine(MoveToTargetAndDestroy(targetPosition));
+            //GameObject.Destroy(_weaponView.gameObject);
+        }
+        private IEnumerator MoveToTargetAndDestroy(Vector3 targetPosition, float duration = 0.2f)
+        {
+            Vector3 startPosition = _weaponView.transform.position;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / duration;
+
+                // Smoothly interpolate position
+                _weaponView.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                yield return null;
+            }
+
+            // Ensure the final position is set
+            _weaponView.transform.position = targetPosition;
+
+            // Unlock targets and destroy the weapon
+            //UnlockTargets();
             GameObject.Destroy(_weaponView.gameObject);
         }
 
@@ -236,6 +264,10 @@ namespace Blaster.Weapon
         public void Reload()
         {
             throw new System.NotImplementedException();
+        }
+        public Vector3 GetLocalPosition()
+        {
+            return _weaponView.transform.localPosition;
         }
     }
 
