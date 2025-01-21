@@ -68,7 +68,11 @@ namespace Blaster.Level
         public void LoadLevel()
         {
             _currentLevel = _gameLevel.Levels.Find(level => level.LevelIndex == _currentLevelIndex);
-
+            if(_currentLevel == null)
+            {
+                Debug.LogError("Level not found");
+                return;
+            }
             LoadGrid();
             LoadWeapon();
         }

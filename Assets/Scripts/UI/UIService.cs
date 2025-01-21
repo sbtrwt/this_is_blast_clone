@@ -22,6 +22,8 @@ public class UIService : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _progressLevelText;
     [SerializeField] private Image _progressImage;
     [SerializeField] private Button _restartMenuButton;
+    [SerializeField] private GameObject _shadowPanel;
+
     private int _levelIndex;
     // Start is called before the first frame update
     void Start()
@@ -65,11 +67,13 @@ public class UIService : MonoBehaviour
         _gameOverPanel.SetActive(false);
         _progressImage.fillAmount = 1;
         _progressLevelText.text = "Level " + levelIndex;
+        _shadowPanel.SetActive(true);
         Debug.Log("Game Started");
     }
     public void ShowGameOverPanel(bool isWin)
     {
         _gameOverPanel.SetActive(true);
+        _shadowPanel.SetActive(false);
 
         _nextLevelButton.gameObject.SetActive(isWin);
         _restartButton.gameObject.SetActive(!isWin);

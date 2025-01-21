@@ -71,7 +71,7 @@ namespace Blaster
 
         private void InjectDependencies()
         {
-            _weaponService.Init(_bulletService, _eventService, _weaponHolderService, _soundService);
+            _weaponService.Init(_bulletService, _eventService, _weaponHolderService, _soundService, this);
             //_weaponService.SetTargetInRange(_targets);
             _gridService.Init(_eventService, _targetService);
             _targetService.Init(_gridService, _eventService,_soundService);

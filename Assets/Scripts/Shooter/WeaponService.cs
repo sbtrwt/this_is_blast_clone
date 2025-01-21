@@ -14,6 +14,7 @@ namespace Blaster.Weapon
 
         private BulletService _bulletService;
         private SoundService _soundService;
+        private GameService _gameService;
 
         private WeaponSO _weaponSO;
         private Transform _weaponContainer;
@@ -27,12 +28,13 @@ namespace Blaster.Weapon
 
             this._weaponContainer = container;
         }
-        public void Init(BulletService bulletService, EventService eventService, WeaponHolderService weaponHolderService, SoundService soundService)
+        public void Init(BulletService bulletService, EventService eventService, WeaponHolderService weaponHolderService, SoundService soundService, GameService gameService)
         {
             this._bulletService = bulletService;
             this._eventService = eventService;
             this._weaponHolderService = weaponHolderService;
             this._soundService = soundService;
+            this._gameService = gameService;
             //CreateWeapon(_weaponSO, _weaponContainer);
             SubscribeToEvents();
             //CreateStage(2);
@@ -203,7 +205,10 @@ namespace Blaster.Weapon
         public void OnWeaponFire()
         {
             _soundService.PlaySoundEffects(SoundType.Shoot);
+          _gameService.Invoke(nameof( Vibrate), 0.1f);
         }
+
+        private void Vibrate() { Handheld.Vibrate(); }
         public void IsGameOver()
         {
             if(IsAllStagesFilled() && IsStageAllWeaponIdle())
