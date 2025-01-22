@@ -48,6 +48,7 @@ namespace Blaster
         [SerializeField] private Sound.SoundSO _soundSO;
         [SerializeField] private AudioSource _SFXAudioSource;
         [SerializeField] private AudioSource _bgMusicAudioSource;
+        [SerializeField] private AudioSource _dialogAudioSource;
         #endregion
         // Start is called before the first frame update
         private void Start()
@@ -66,7 +67,7 @@ namespace Blaster
             _targetService = new TargetService(_targetSO, _smokeParticle);
             _weaponHolderService = new WeaponHolderService(2, 2, _weaponContainer);
             _levelService = new LevelService(_levelSO, _gridContainer);
-            _soundService = new Sound.SoundService(_soundSO, _SFXAudioSource, _bgMusicAudioSource);
+            _soundService = new Sound.SoundService(_soundSO, _SFXAudioSource, _bgMusicAudioSource, _dialogAudioSource);
         }
 
         private void InjectDependencies()

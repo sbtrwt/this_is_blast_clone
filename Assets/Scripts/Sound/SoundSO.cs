@@ -7,12 +7,14 @@ namespace Blaster.Sound
     [CreateAssetMenu(fileName = "SoundScriptableObject", menuName = "ScriptableObjects/SoundScriptableObject")]
     public class SoundSO : ScriptableObject
     {
-        public Sounds[] audioList;
+        public GameSound[] audioList;
     }
     [Serializable]
-    public struct Sounds
+    public struct GameSound
     {
         public SoundType soundType;
         public AudioClip audio;
+        [Range(0, 1)]
+        public float volume;
     }
 }

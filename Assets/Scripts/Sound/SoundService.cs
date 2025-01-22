@@ -10,45 +10,61 @@ namespace Blaster.Sound
         private SoundSO soundScriptableObject;
         private AudioSource audioEffects;
         private AudioSource backgroundMusic;
+        private AudioSource dialogSound;
 
-        public SoundService(SoundSO soundScriptableObject, AudioSource audioEffectSource, AudioSource bgMusicSource)
+        public SoundService(SoundSO soundScriptableObject, AudioSource audioEffectSource, AudioSource bgMusicSource, AudioSource dialogSound)
         {
             this.soundScriptableObject = soundScriptableObject;
             audioEffects = audioEffectSource;
             backgroundMusic = bgMusicSource;
             PlaybackgroundMusic(SoundType.BackgroundMusic, true);
+            this.dialogSound = dialogSound;
         }
 
         public void PlaySoundEffects(SoundType soundType, bool loopSound = false)
         {
-            AudioClip clip = GetSoundClip(soundType);
-            if (clip != null)
-            {
-                audioEffects.loop = loopSound;
-                audioEffects.clip = clip;
-                audioEffects.PlayOneShot(clip);
-            }
-            else
-                Debug.LogError("No Audio Clip selected.");
+            PlaySound(audioEffects, soundType, loopSound);
         }
 
         private void PlaybackgroundMusic(SoundType soundType, bool loopSound = false)
         {
-            AudioClip clip = GetSoundClip(soundType);
+            PlaySound(backgroundMusic, soundType, loopSound);
+        }
+
+        public void PlayDialogSound(SoundType soundType, bool loopSound = false)
+        {
+            PlaySound(dialogSound, soundType, loopSound);
+        }
+
+        private void PlaySound(AudioSource audioSource, SoundType soundType, bool loopSound)
+        {
+            GameSound gameSound = GetSoundClip(soundType);
+            AudioClip clip = null;
+            if (gameSound.audio != null)
+            {
+                clip = gameSound.audio;
+                audioSource.volume = gameSound.volume;
+            }
+            else
+                Debug.LogError("No Audio Clip selected.");
             if (clip != null)
             {
-                backgroundMusic.loop = loopSound;
-                backgroundMusic.clip = clip;
-                backgroundMusic.Play();
+                audioSource.loop = loopSound;
+                audioSource.clip = clip;
+                audioSource.Play();
             }
         }
 
-        private AudioClip GetSoundClip(SoundType soundType)
+        public void StopDialogSound()
         {
-            Sounds sound = Array.Find(soundScriptableObject.audioList, item => item.soundType == soundType);
-            if (sound.audio != null)
-                return sound.audio;
-            return null;
+            if(dialogSound.isPlaying)
+            dialogSound.Stop();
+        }
+
+        private GameSound GetSoundClip(SoundType soundType)
+        {
+            return Array.Find(soundScriptableObject.audioList, item => item.soundType == soundType);
+           
         }
     }
 
