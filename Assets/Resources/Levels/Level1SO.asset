@@ -15,6 +15,7 @@ MonoBehaviour:
   LevelIndex: 1
   Rows: 10
   Columns: 4
+  Height: 1
   IsHelp: 1
   StageColumns: 2
   ShooterStageView: {fileID: 7736268081153827064, guid: 3d3f219a80cb6c148bc6be5a3623e66e, type: 3}

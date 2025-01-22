@@ -1,4 +1,5 @@
-﻿using Blaster.Targets;
+﻿using Blaster.Grid;
+using Blaster.Targets;
 using Blaster.Weapon;
 using System.Collections;
 using UnityEngine;
@@ -68,6 +69,14 @@ namespace Blaster.Target
         public void SetColor(Color color)
         {
             _targetView.Setcolor(color);
+        }
+        public void SetLocalPosition(Vector3 position)
+        {
+            _targetView.transform.localPosition = position;
+        }
+        public void SetLocalScale(Vector3 scale)
+        {
+            _targetView.transform.localScale = scale;
         }
     }
 }

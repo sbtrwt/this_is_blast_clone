@@ -56,7 +56,13 @@ public class UIService : MonoBehaviour
     {
         _progressImage.fillAmount = progress;
     }
-    public void OnNextLevel() { _levelService.NextLevel(); }
+    public void OnNextLevel() 
+    {
+        if (_levelIndex <= 5)
+            _levelService.NextLevel();
+        else
+            OnRestart();
+    }
     public void OnRestart()
     {
         _eventService.OnGameStart.InvokeEvent(_levelIndex);
@@ -79,6 +85,10 @@ public class UIService : MonoBehaviour
         _restartButton.gameObject.SetActive(!isWin);
         _levelText.text = "Level " + _levelIndex;
         _gameOverText.text = isWin ? "Victory!" : "Game Over!";
+        if(_levelIndex == 5)
+        {
+            _levelText.text = "More comming soon!";
+        }
        
     }
     private void OnDestroy()

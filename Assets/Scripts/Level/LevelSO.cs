@@ -14,6 +14,7 @@ namespace Blaster.Level
         public int LevelIndex;
         [Range(1, 100)] public int Rows;
         [Range(1, 100)] public int Columns;
+        public int Height;
         public bool IsHelp;
         public int StageColumns;
         public ShooterStageView ShooterStageView;

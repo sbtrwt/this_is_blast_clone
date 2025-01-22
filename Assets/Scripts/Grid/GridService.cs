@@ -2,6 +2,7 @@
 using Blaster.Events;
 using Blaster.Level;
 using Blaster.Target;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace Blaster.Grid
         private TargetService _targetService;
         private TileView _tileView;
         private Transform _container;
+        private GameService _gameService;
         public GridService(int rows, int columns, TileView tileView, Transform container)
         {
             _rows = rows;
@@ -24,14 +26,15 @@ namespace Blaster.Grid
             _tileView = tileView;
             _container = container;
         }
-        public void Init(EventService eventService, TargetService targetService)
+        public void Init(EventService eventService, TargetService targetService, GameService gameService)
         {
             this._eventService = eventService;
             this._targetService = targetService;
+            this._gameService = gameService;
             //CreateGrid(_rows, _columnsCount, _tileView, _container);
             //OnTargetsLoaded();
         }
-        public void CreateGrid(int rows, int columns, TileView tileView, Transform container, List<TargetData> targetTypes)
+        public void CreateGrid(int rows, int columns, TileView tileView, Transform container, List<TargetData> targetTypes, int height = 1)
         {
             _rows = rows;
             _columnsCount = columns;
@@ -44,12 +47,12 @@ namespace Blaster.Grid
                 for (int row = 0; row < rows; row++)
                 {
                     // Create a new tile controller
-                    var tileController = new TileController(tileView, container, 1, _targetService);
+                    var tileController = new TileController(tileView, container, height, _targetService);
 
                     // Initialize target controllers for the tile
                     Stack<TargetController> targetControllers = new Stack<TargetController>();
 
-                    for (int i = 0; i < 1; i++) // Add one target per tile (adjust as needed)
+                    for (int i = 0; i < height; i++) // Add one target per tile (adjust as needed)
                     {
                         var targetController = _targetService.CreateTarget(tileController._tileView.transform);
                         targetController.GridColumn = column;
@@ -59,6 +62,18 @@ namespace Blaster.Grid
                         //Debug.LogError(targetData.TargetType);
                         targetController.TargetType = targetData.TargetType; // Assign TargetType
                         targetController.SetColor(targetController.TargetType.Color);
+                       
+                        // Calculate position for stacking with 3D perspective
+                        float zOffset = -i * 0.1f; // Simulate depth by decreasing Z as we go up
+                        float yOffset = i * 0.2f;  // Adjust vertical spacing as needed
+
+                        // Adjust the position of the target
+                        targetController.SetLocalPosition( new Vector3(0, yOffset, zOffset));
+
+                        // Optional: Adjust scale to enhance 3D effect
+                        float scaleFactor = 1.0f - (i * 0.05f); // Slightly reduce scale as it stacks higher
+                        targetController.SetLocalScale( new Vector3(scaleFactor, scaleFactor, 1));
+
                         targetControllers.Push(targetController);
                     }
 
@@ -151,14 +166,41 @@ namespace Blaster.Grid
             }
 
             // Shift tiles visually
+            //int currentRow = 0;
+            //foreach (var tile in _columns[column])
+            //{
+            //    tile.SetLocalPosition(new Vector2(column, currentRow));
+            //    currentRow++;
+            //}
+            _gameService.StartCoroutine(ShiftTilesWithAnimation(column));
+        }
+        private IEnumerator ShiftTilesWithAnimation(int column)
+        {
             int currentRow = 0;
             foreach (var tile in _columns[column])
             {
-                tile.SetLocalPosition(new Vector2(column, currentRow));
+                Vector2 targetPosition = new Vector2(column, currentRow);
+                _gameService. StartCoroutine(SmoothMove(tile._tileView.transform, targetPosition, 0.3f)); // Adjust duration as needed
                 currentRow++;
             }
+            yield return null;
         }
 
+        private IEnumerator SmoothMove(Transform transform, Vector2 targetPosition, float duration)
+        {
+            Vector2 startPosition = transform.localPosition;
+            float elapsedTime = 0;
+
+            while (elapsedTime < duration)
+            {
+                if (transform != null)
+                    transform.localPosition = Vector2.Lerp(startPosition, targetPosition, elapsedTime / duration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            if(transform != null)
+            transform.localPosition = targetPosition; // Ensure the final position is set
+        }
 
         public void OnTargetsLoaded()
         {

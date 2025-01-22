@@ -73,7 +73,7 @@ namespace Blaster
         {
             _weaponService.Init(_bulletService, _eventService, _weaponHolderService, _soundService, this);
             //_weaponService.SetTargetInRange(_targets);
-            _gridService.Init(_eventService, _targetService);
+            _gridService.Init(_eventService, _targetService,this);
             _targetService.Init(_gridService, _eventService,_soundService);
             _weaponHolderService.Init(_weaponService);
             _levelService.Init(_gridService, _eventService, _weaponHolderService, _bulletService, _weaponService);
