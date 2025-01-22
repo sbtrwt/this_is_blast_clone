@@ -326,33 +326,33 @@ MonoBehaviour:
   ShooterTypes:
   - X: 0
     Y: 0
-    BulletCount: 10
+    BulletCount: 20
     WeaponSO: {fileID: 11400000, guid: f56c38c1895fe94409cec98ba6dfb92c, type: 2}
   - X: 0
     Y: 1
-    BulletCount: 20
+    BulletCount: 40
     WeaponSO: {fileID: 11400000, guid: 7202a77cbaaea6c418e09ad2fbd7f1e4, type: 2}
   - X: 1
     Y: 0
-    BulletCount: 10
+    BulletCount: 20
     WeaponSO: {fileID: 11400000, guid: 91afda8f314a6b34e8c6929b92c378b0, type: 2}
   - X: 1
     Y: 1
-    BulletCount: 10
+    BulletCount: 20
     WeaponSO: {fileID: 11400000, guid: 3657513c37ce9ff418aec69172dd8e73, type: 2}
   - X: 2
     Y: 0
-    BulletCount: 10
+    BulletCount: 20
     WeaponSO: {fileID: 11400000, guid: 7202a77cbaaea6c418e09ad2fbd7f1e4, type: 2}
   - X: 2
     Y: 1
-    BulletCount: 10
+    BulletCount: 20
     WeaponSO: {fileID: 11400000, guid: 91afda8f314a6b34e8c6929b92c378b0, type: 2}
   - X: 3
     Y: 0
-    BulletCount: 10
+    BulletCount: 20
     WeaponSO: {fileID: 11400000, guid: 91afda8f314a6b34e8c6929b92c378b0, type: 2}
   - X: 3
     Y: 1
-    BulletCount: 20
+    BulletCount: 40
     WeaponSO: {fileID: 11400000, guid: 7202a77cbaaea6c418e09ad2fbd7f1e4, type: 2}

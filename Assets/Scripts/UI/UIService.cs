@@ -87,7 +87,7 @@ public class UIService : MonoBehaviour
         _gameOverText.text = isWin ? "Victory!" : "Game Over!";
         if(_levelIndex == 5)
         {
-            _levelText.text = "More comming soon!";
+            _levelText.text = "More levels coming soon!";
         }
        
     }
