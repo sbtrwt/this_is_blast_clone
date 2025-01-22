@@ -7,16 +7,17 @@ namespace Blaster.Weapon
 {
     public class WeaponView : MonoBehaviour, IPointerDownHandler
     {
-        [SerializeField] private Transform gunPoint;
-        [SerializeField] private SpriteRenderer weaponSprite;
-        [SerializeField] private TMPro.TMP_Text hitText;
-        [SerializeField] private ParticleSystem smokePartilce;
-        [SerializeField] private Transform outTarget;
-        [SerializeField] private GameObject handHelp;
+        [SerializeField] private Transform _gunPoint;
+        [SerializeField] private SpriteRenderer _weaponSprite;
+        [SerializeField] private TMPro.TMP_Text _hitText;
+        [SerializeField] private ParticleSystem _smokePartilce;
+        [SerializeField] private Transform _outTarget;
+        [SerializeField] private GameObject _handHelp;
+        [SerializeField] protected MeshRenderer _meshRenderer;
 
         public WeaponController Controller;
-        public Transform GunPoint => gunPoint;
-        public Transform OutTarget => outTarget;
+        public Transform GunPoint => _gunPoint;
+        public Transform OutTarget => _outTarget;
         public void OnPointerDown(PointerEventData eventData)
         {
             Debug.Log("Pointer down on weapon view.");
@@ -33,19 +34,20 @@ namespace Blaster.Weapon
         }
         public void SetColor(Color color)
         {
-            weaponSprite.color = color;
+            _weaponSprite.color = color;
+            _meshRenderer.material.color = color;
         }
         public void SetHitText(string text)
         {
-            hitText.text = text;
+            _hitText.text = text;
         }
         public void PlaySmokeParticle()
         {
-            smokePartilce.Play();
+            _smokePartilce.Play();
         }
         public void ShowHandHelp(bool show)
         {
-            handHelp.SetActive(show);
+            _handHelp.SetActive(show);
         }
     }
 }

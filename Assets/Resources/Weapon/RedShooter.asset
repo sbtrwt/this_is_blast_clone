@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd695609637c13546ac5ceb2b12cdae0, type: 3}
-  m_Name: GreenShooter
+  m_Name: RedShooter
   m_EditorClassIdentifier: 
-  WeaponView: {fileID: 5407762897007717339, guid: 871180b3590679146aeb2805583faf50, type: 3}
+  WeaponView: {fileID: 5407762897007717339, guid: 9fab03675a9faac489ac7ccd275060f7, type: 3}
   FireRate: 0.1
-  BulletCount: 10
-  TargetType: {fileID: 11400000, guid: 063947bde9c1b9948842671f6ab8ba80, type: 2}
+  BulletCount: 4
+  TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}

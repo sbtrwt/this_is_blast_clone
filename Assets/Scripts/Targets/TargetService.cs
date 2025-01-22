@@ -57,7 +57,7 @@ namespace Blaster.Target
         public void ShowSmokeEffect(Vector3 position)
         {
             var tempSmoke = GameObject.Instantiate(_smokeParticle);
-            position.z = -3;
+            //position.z = -3;
             tempSmoke.transform.position = position;
             tempSmoke.Play();
             GameObject.Destroy(tempSmoke.gameObject, 1f);

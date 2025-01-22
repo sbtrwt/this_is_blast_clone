@@ -15,4 +15,4 @@ MonoBehaviour:
   Health: 1
   Score: 1
   TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}
-  TargetPrefab: {fileID: 5648467154180797446, guid: 8a41e04cea4fa45499e7b46b934d2b6e, type: 3}
+  TargetPrefab: {fileID: 5648467154180797446, guid: c6fd30b2f92256646ad8fd11c547b4df, type: 3}

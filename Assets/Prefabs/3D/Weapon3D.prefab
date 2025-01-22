@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 7055744254867694743}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.012, y: 0, z: 0.79}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0.009, z: 0.8}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5133722676512932215}
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7055744254867694743}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 09c35e6aa168a244a8386995e6b7dca4, type: 2}
 --- !u!23 &8379353824085351152
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -50,7 +50,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7055744254867694743}
   m_Enabled: 1
-  m_CastShadows: 3
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 5407762897007717339}
   - component: {fileID: 4338636175913302702}
   m_Layer: 7
-  m_Name: Weapon2D
+  m_Name: Weapon3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,15 +184,15 @@ SpriteRenderer:
   m_SortingLayerID: -604704365
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a482d6e2d5526a84690b363ccd277983, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &5407762897007717339
@@ -551,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7388665040910077179, guid: 8a3010a941afb3a4fa83f8922db84ab2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7388665040910077179, guid: 8a3010a941afb3a4fa83f8922db84ab2, type: 3}
       propertyPath: m_LocalRotation.w

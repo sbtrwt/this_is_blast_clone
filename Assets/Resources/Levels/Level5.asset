@@ -18,7 +18,7 @@ MonoBehaviour:
   Height: 2
   IsHelp: 0
   StageColumns: 4
-  ShooterStageView: {fileID: 7736268081153827064, guid: 3d3f219a80cb6c148bc6be5a3623e66e, type: 3}
+  ShooterStageView: {fileID: 7736268081153827064, guid: 6e1b1cc9c2c8a5643866dfc84bc593ff, type: 3}
   TileView: {fileID: 4865449205267597072, guid: 8eafaaee4e8454f4ba29d712490797ce, type: 3}
   TargetTypes:
   - X: 0
