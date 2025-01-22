@@ -12,6 +12,7 @@ namespace Blaster.Weapon
         [SerializeField] private TMPro.TMP_Text hitText;
         [SerializeField] private ParticleSystem smokePartilce;
         [SerializeField] private Transform outTarget;
+        [SerializeField] private GameObject handHelp;
 
         public WeaponController Controller;
         public Transform GunPoint => gunPoint;
@@ -21,6 +22,7 @@ namespace Blaster.Weapon
             Debug.Log("Pointer down on weapon view.");
             if (Controller != null)
             {
+                ShowHandHelp(false);
                 if (Controller.CheckWeaponInTopRow())
                 { 
                     //Controller.IsActive = true; 
@@ -40,6 +42,10 @@ namespace Blaster.Weapon
         public void PlaySmokeParticle()
         {
             smokePartilce.Play();
+        }
+        public void ShowHandHelp(bool show)
+        {
+            handHelp.SetActive(show);
         }
     }
 }

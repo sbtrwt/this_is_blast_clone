@@ -79,8 +79,9 @@ namespace Blaster.Weapon
                 //_target.IsTargetGotHit = true;
                 if (_bulletCount == 0)
                 {
+                    _weaponService.OnWeaponExit();
                     _weaponService.RemoveWeaponFromStage(this);
-                    UnlockTargets();
+                    //UnlockTargets();
                     DestroyWeapon();
                 }
                 ResetAttackTimer();
@@ -90,9 +91,9 @@ namespace Blaster.Weapon
 
         public void DestroyWeapon()
         {
+          
             UnlockTargets();
             Vector3 targetPosition = _outTarget.position;
-            _weaponService.OnWeaponExit();
             _weaponView.StartCoroutine(MoveToTargetAndDestroy(targetPosition));
             //GameObject.Destroy(_weaponView.gameObject);
         }
@@ -268,6 +269,10 @@ namespace Blaster.Weapon
         public Vector3 GetLocalPosition()
         {
             return _weaponView.transform.localPosition;
+        }
+        public void ShowHandHelp(bool show)
+        {
+            _weaponView.ShowHandHelp(show);
         }
     }
 

@@ -171,5 +171,11 @@ namespace Blaster.Weapon
             // If no match was found, return false
             return false;
         }
+        public void ShowHelp()
+        {
+            WeaponController topWeapon = _columns[0].Peek();
+            topWeapon.ShowHandHelp(true);
+           
+        }
     }
 }

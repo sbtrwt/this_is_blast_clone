@@ -71,6 +71,7 @@ namespace Blaster.Level
             if(_currentLevel == null)
             {
                 Debug.LogError("Level not found");
+                Application.Quit();
                 return;
             }
             LoadGrid();
@@ -90,6 +91,8 @@ namespace Blaster.Level
             _weaponHolderService.SetWeaponHolder(_currentLevel.ShooterRows, _currentLevel.ShooterColumns);
             
             _weaponHolderService.FillIntoWeaponHolder( _bulletService, _weaponService, _currentLevel.ShooterTypes);
+            if (_currentLevel.IsHelp)
+            { _weaponHolderService.ShowHelp(); }
         }
         public void NextLevel()
         {

@@ -181,11 +181,12 @@ namespace Blaster.Weapon
                 stage.IsFilled = true;
                 //weapon.IsActive = true;
                 weapon.SetWeaponContainer(_weaponContainer);
-
+                _soundService.PlaySoundEffects(SoundType.StageShooter);
                 // Start the animation coroutine
                 Vector3 targetPosition = stage.Position;
                _gameService. StartCoroutine(MoveWeaponToPosition(weapon, targetPosition, 0.1f)); // Adjust duration as needed
                 weapon.SetTargetInRange(_targetControllers);
+
             }
         }
         private IEnumerator MoveWeaponToPosition(WeaponController weapon, Vector3 targetPosition, float duration)
@@ -261,7 +262,13 @@ namespace Blaster.Weapon
         }
 
 
-
+        public void ShowHandHelp(bool show)
+        {
+            foreach (var weapon in weapons)
+            {
+                weapon.ShowHandHelp(show);
+            }
+        }
 
         ~WeaponService()
         {
