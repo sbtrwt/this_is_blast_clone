@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponView: {fileID: 5407762897007717339, guid: 9fab03675a9faac489ac7ccd275060f7, type: 3}
   FireRate: 0.1
-  BulletCount: 0
-  TargetType: {fileID: 0}
+  BulletCount: 1
+  TargetType: {fileID: 11400000, guid: dd06fbf3c40d4ee48adc6b7cb69aa4cf, type: 2}

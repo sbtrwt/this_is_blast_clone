@@ -12,8 +12,8 @@ namespace Blaster.Level
     public class LevelSO : ScriptableObject
     {
         public int LevelIndex;
-        [Range(1, 100)] public int Rows;
-        [Range(1, 100)] public int Columns;
+        [Range(1, 1000)] public int Rows;
+        [Range(1, 10)] public int Columns;
         public int Height;
         public bool IsHelp;
         public int StageColumns;
@@ -24,6 +24,8 @@ namespace Blaster.Level
         public int ShooterRows;
         public int ShooterColumns;
         public List<ShooterData> ShooterTypes;
+        public List<TargetType> targetTypes;
+        public bool IsRandom;
         //public WeaponSO[,] ShooterTypes;
 
 
@@ -48,7 +50,15 @@ namespace Blaster.Level
                 {
                     if (!TargetTypes.Exists(t => t.X == column && t.Y == row))
                     {
-                        TargetTypes.Add(new TargetData { X = column, Y = row, TargetType = null });
+                        if(IsRandom)
+                        {
+                            int random = UnityEngine.Random.Range(0, targetTypes.Count);
+                            TargetTypes.Add(new TargetData { X = column, Y = row, TargetType = targetTypes[random] });
+                        }
+                        else
+                        {
+                            TargetTypes.Add(new TargetData { X = column, Y = row, TargetType = null });
+                        }
                     }
                 }
             }

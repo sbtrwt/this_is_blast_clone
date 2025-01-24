@@ -12,7 +12,8 @@ namespace Blaster.Weapon
         private int _rows;
         private int _columnsCount;
         private WeaponService _weaponService;
-
+        private float _columnSpacing = 2f; // Adjust as per weapon width or grid spacing
+        private float _rowSpacing = 2f;
         public WeaponHolderService(int rows, int columns, Transform stageArea)
         {
             _waitingArea = stageArea;
@@ -22,6 +23,8 @@ namespace Blaster.Weapon
         {
             _rows = rows;
             _columnsCount = columns;
+            //_rowSpacing = _rowSpacing / (float)rows;
+            //_columnSpacing = _columnSpacing / columns;
             // Initialize columns
             _columns = new List<Queue<WeaponController>>();
             for (int i = 0; i < _columnsCount; i++)
@@ -42,21 +45,21 @@ namespace Blaster.Weapon
             }
 
             // Define spacing (e.g., based on weapon prefab dimensions or fixed values)
-            float columnSpacing = 1f; // Adjust as per weapon width or grid spacing
-            float rowSpacing = 1f;    // Adjust as per weapon height or grid spacing
+            //float columnSpacing = _columnSpacing; // Adjust as per weapon width or grid spacing
+            //float rowSpacing = _columnSpacing;    // Adjust as per weapon height or grid spacing
 
             // Calculate total grid width and height
-            float gridWidth = _columnsCount * columnSpacing;
-            float gridHeight = _rows * rowSpacing;
+            float gridWidth = _columnsCount * _columnSpacing;
+            float gridHeight = _rows * _rowSpacing;
 
             // Calculate starting offsets to center the grid relative to the parent
-            float startX = -(gridWidth / 2) + (columnSpacing / 2); // Center horizontally
-            float startY = -(gridHeight / 2) + (rowSpacing / 2);   // Center vertically
+            float startX = -(gridWidth / 2) + (_columnSpacing / 2) ; // Center horizontally
+            float startY = -(gridHeight / 2) + (_rowSpacing / 2) - _rowSpacing;   // Center vertically
 
             // Determine the weapon's position in the grid
             int currentRow = _columns[column].Count; // Current row index in the column
-            float xPos = startX + (column * columnSpacing);
-            float yPos = startY + ((_rows - currentRow - 1) * rowSpacing); // Adjust for top-down alignment
+            float xPos = startX + (column * _columnSpacing);
+            float yPos = startY + ((_rows - currentRow - 1) * _rowSpacing); // Adjust for top-down alignment
 
             // Set the weapon's local position relative to its parent
             Vector3 gridLocalPosition = new Vector3(xPos, yPos, 0);
@@ -94,16 +97,16 @@ namespace Blaster.Weapon
         private void ShiftColumnUp(int column)
         {
             // Define spacing (based on weapon prefab dimensions or fixed values)
-            float columnSpacing = 1f; // Adjust as needed
-            float rowSpacing = 1f;    // Adjust as needed
+            //float columnSpacing = 3f; // Adjust as needed
+            //float rowSpacing = 2f;    // Adjust as needed
 
             // Calculate the total grid width and height
-            float gridWidth = _columnsCount * columnSpacing;
-            float gridHeight = _rows * rowSpacing;
+            float gridWidth = _columnsCount * _columnSpacing;
+            float gridHeight = _rows * _rowSpacing;
 
             // Calculate the starting X and Y positions to center the grid
-            float startX = -(gridWidth / 2) + (columnSpacing / 2); // Center horizontally
-            float startY = -(gridHeight / 2) + (rowSpacing / 2);   // Center vertically
+            float startX = -(gridWidth / 2) + (_columnSpacing / 2); // Center horizontally
+            float startY = -(gridHeight / 2) + (_rowSpacing / 2) - _rowSpacing;   // Center vertically
 
             int rowIndex = 0;
 
@@ -111,8 +114,8 @@ namespace Blaster.Weapon
             foreach (var weapon in _columns[column])
             {
                 // Calculate the new local position for the weapon
-                float xPos = startX + (column * columnSpacing); // Centered column position
-                float yPos = startY + ((_rows - rowIndex - 1) * rowSpacing); // Top-down alignment
+                float xPos = startX + (column * _columnSpacing); // Centered column position
+                float yPos = startY + ((_rows - rowIndex - 1) * _rowSpacing); // Top-down alignment
                 Vector3 newLocalPosition = new Vector3(xPos, yPos, 0);
 
                 // Set the weapon's local position

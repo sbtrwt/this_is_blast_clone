@@ -64,7 +64,7 @@ namespace Blaster.Grid
                         targetController.SetColor(targetController.TargetType.Color);
                        
                         // Calculate position for stacking with 3D perspective
-                        float zOffset = -i * 0.1f; // Simulate depth by decreasing Z as we go up
+                        float zOffset = -i * 0.5f; // Simulate depth by decreasing Z as we go up
                         float yOffset = i * 0.2f;  // Adjust vertical spacing as needed
 
                         // Adjust the position of the target

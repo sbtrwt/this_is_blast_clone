@@ -123,7 +123,8 @@ namespace Blaster.Weapon
             _stages = new List<ShooterStageController>();
 
             // Calculate the total width and starting position
-            float stageWidth = stagePrefab.transform.localScale.x; // Adjust if prefab size isn't tied to scale
+            float margin = 6f / count; // Adjust as needed
+            float stageWidth = stagePrefab.transform.localScale.x + margin; // Adjust if prefab size isn't tied to scale
             float totalWidth = count * stageWidth;
             float startX = -(totalWidth / 2) + (stageWidth / 2); // Center-align the stages
 
